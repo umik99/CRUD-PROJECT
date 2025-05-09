@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO entityToDTO(User user) {
         return UserDTO.builder()
                 .username(user.getUsername())
+                .userId(user.getUserid())
                 .password(user.getPassword())
                 .role(user.getRole())
                 .build();
