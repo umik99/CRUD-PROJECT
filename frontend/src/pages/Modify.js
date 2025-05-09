@@ -1,0 +1,294 @@
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {Container, Form, Button} from 'react-bootstrap';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { FaTrashAlt } from 'react-icons/fa'; // 휴지통 아이콘
+
+
+function Modify({user}){
+
+
+    const navigate = useNavigate();
+
+    const location = useLocation();
+
+    const board = location.state?.board;
+    const existingFiles = location.state?.files || [];
+
+
+    const [title, setTitle] = useState(board.title);
+    const [content, setContent] = useState(board.content);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+   
+    const [allFiles , setAllFiles] = useState(() =>
+      (existingFiles || []).map((file, index) => ({
+        name: file.savedName,
+        type: 'existing',
+        order: index,
+        previewURL: `http://localhost:8080/uploads/thumbnails/${file.savedName}`
+      }),)
+    );
+
+    const [removeFiles, setRemoveFiles] = useState([]);
+
+
+    useEffect(() =>{
+        if (!user){
+            
+            alert("로그인이 필요합니다.");
+            navigate("/login");
+        }
+
+    },[user, navigate]);
+    
+  
+
+    const handleSubmit= async (e) =>{
+        e.preventDefault();
+        setIsSubmitting(true);
+    
+
+    try{
+        const boardDTO = {
+          title, content, user,
+          removeFiles,
+          meta: allFiles.map(file => ({
+            name: file.name,
+            order: file.order,  // 파일 순서
+            type: file.type, }))
+        };
+
+        const formData = new FormData();
+
+        allFiles.filter(file => file.type=='new').forEach(file =>{
+          formData.append("files",file.file);
+        });
+
+        const jsonBlob = new Blob(
+          [JSON.stringify(boardDTO)],
+          { type: "application/json" }
+      );
+      formData.append("boardDTO", jsonBlob);
+
+        const response = await axios.post(`/api/board/modify/${board.bno}`, formData, {
+       
+            withCredentials:true
+        });
+
+        alert("수정 성공!")
+        navigate(`/board/read/${board.bno}`, { replace: true });
+    }catch(error){
+        console.error("등록 실패",error);
+        alert("등록에 실패했습니다.");
+    }finally{
+        setIsSubmitting(false);
+    }
+}
+
+const handleAddNewFiles = (e)=>{
+  const selected = e.target.files;
+  const newFileEntries = Array.from(selected).map((file,index)=>({
+    file,
+    name:file.name,
+    type:'new',
+    order:allFiles.length+index,
+    previewURL:URL.createObjectURL(file),
+  }))
+
+  setAllFiles(prev =>[...prev , ...newFileEntries])
+
+}
+
+ 
+    
+const reorderFiles = (filesArray) => {
+  return filesArray.map((file, index) => ({
+    ...file,
+    order: index
+  }));
+};
+
+ 
+  const handleRemoveFile = (indexToRemove) =>{
+    const fileToRemove = allFiles[indexToRemove];
+
+  if (fileToRemove.type === 'existing') {
+    setRemoveFiles(prev => [...prev, fileToRemove]);
+  } else if (fileToRemove.type === 'new') {
+    // 새 파일이면 revokeObjectURL도 수행
+    URL.revokeObjectURL(fileToRemove.previewUrl);
+  }
+
+  // allFiles 배열에서 제거
+ 
+  const newFiles = allFiles.filter((_, i) => i !== indexToRemove);
+  setAllFiles(reorderFiles(newFiles));
+}
+
+  const handleOnDragEnd = (result) => {
+      const { source, destination } = result;
+    
+      // 목적지(destination)가 없으면 종료
+      if (!destination) return;
+    
+      // 드래그가 휴지통 영역으로 끝났을 때 삭제 처리
+      if (destination.droppableId === 'droppable-trash') {
+        // 삭제하려는 파일의 인덱스를 찾음
+        const indexToRemove = source.index;
+        handleRemoveFile(indexToRemove); // 기존 삭제 함수 호출
+        return; // 삭제 후 처리 종료
+      }
+    
+      // 파일 순서 변경 로직
+      const reorderedFiles = Array.from(allFiles); // 기존 배열 복사
+      const [removed] = reorderedFiles.splice(source.index, 1); // 원본에서 이동할 파일 제거
+      reorderedFiles.splice(destination.index, 0, removed); // 이동한 파일을 새로운 위치에 삽입
+    
+      
+      setAllFiles(reorderFiles(reorderedFiles)); // 순서 변경된 배열 업데이트
+
+
+      console.log(reorderedFiles)
+    };
+  
+
+    const handleGoBack = () => {
+      window.history.back();
+    };
+    return (
+        <Container className="mt-4 border-info border rounded ">
+           <div className="mt-4">
+             <h3>게시글 수정</h3>
+        <Form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>제목</label>
+          <input
+            className="form-control "
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>내용</label>
+          <textarea
+            className="form-control"
+            rows="7"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
+        </div>
+
+     
+     
+      <Form.Group controlId="formFileLg" className="mb-3">
+        <Form.Label>사진 파일 첨부</Form.Label>
+        <Form.Control type="file"
+        accept=".jpg,.jpeg,.png" 
+        multiple
+        onChange={handleAddNewFiles} />
+      </Form.Group>
+
+
+     
+
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+    <Droppable droppableId="droppable-preview" direction="horizontal">
+    {(provided) => (
+      <div
+        ref={provided.innerRef}
+        {...provided.droppableProps}
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          marginTop: '10px',
+          gap: '10px',
+        }}
+      >
+        {allFiles.map((preview, index) => (
+  <Draggable key={preview.name + index} draggableId={preview.name + index} index={index}>
+    {(provided) => (
+      <div
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        style={{
+          ...provided.draggableProps.style,
+          width: '200px',
+          height: '200px',
+          border: '1px solid #ccc',
+          borderRadius: '8px',
+          overflow: 'hidden',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+          transition: 'transform 0.1s ease',
+        }}
+      >
+        <img
+          src={preview.previewURL}
+          alt={preview.name}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
+      </div>
+    )}
+  </Draggable>
+))}
+        {provided.placeholder} {/* 드래그 중에 자리를 비워둘 공간 */}
+      </div>
+    )}
+  </Droppable>
+  
+  {/* 아래쪽에 휴지통 영역을 추가 */}
+  <Droppable droppableId="droppable-trash">
+    {(provided,snapshot) => (
+      <div
+        ref={provided.innerRef}
+        {...provided.droppableProps}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '20px',
+          background: '#f4f4f4',
+          borderRadius: '8px',
+          marginTop: '20px',
+          cursor: 'pointer',
+          background: snapshot.isDraggingOver ? '#f9d6d6' : '#f0f0f0',  // 드래그 중일 때 배경색 변경
+
+        }}
+      >
+        <FaTrashAlt size={30} color="#888" />
+        <span style={{ marginLeft: '10px', fontSize: '18px', color: '#888' }}>
+          Drag images here to delete
+        </span>
+      </div>
+    )}
+      </Droppable>
+  </DragDropContext>
+
+
+
+
+
+      <Button className=" mb-3 btn   btn-primary mt-3" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "작성 중..." : "수정하기"}
+        </Button>
+        <Button type="button" className=" mx-2 btn btn-danger btn" onClick={handleGoBack}>
+                            취소
+          </Button>
+        </Form>
+        </div>
+        </Container>
+        
+  );
+
+
+}
+
+export default Modify;
