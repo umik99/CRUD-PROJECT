@@ -9,7 +9,7 @@ function Logout({ setUser }) {
     axios.post("/api/logout", {}, { withCredentials: true })
       .then(() => {
         setUser(null); // 🔥 유저 상태 초기화
-        navigate("/board"); // 🔥 로그인 페이지로 이동
+        navigate("/"); // 
       })
       .catch(error => console.error("Logout failed:", error));
   }, [setUser, navigate]);

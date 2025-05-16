@@ -40,9 +40,12 @@ public class BoardController {
 
 
     @Operation(summary = "Board List", description = "get boardlist")
-    @GetMapping("/list")
-    public PageResponseDTO<BoardDTO> getBoardList(PageRequestDTO requestDTO) {
-        return boardService.getBoardList(requestDTO);
+    @GetMapping("/{category}/list")
+    public PageResponseDTO<BoardDTO> getBoardList(
+            @PathVariable String category,
+            PageRequestDTO requestDTO) {
+
+        return boardService.getBoardList(category, requestDTO);
     }
 
     @Operation(summary="Board read", description =  "get board detail read")
@@ -69,10 +72,11 @@ public class BoardController {
     @Operation(summary="Board create" , description="Board create")
     @PostMapping("/register")
     public ResponseEntity<?> registerBoard(
+            @RequestPart("category") String category,
             @RequestPart("title") String title,
             @RequestPart("content") String content,
             @RequestPart("user") UserDTO user,
-            @RequestPart("files") MultipartFile[] files,
+            @RequestPart(value = "files", required = false) MultipartFile[] files,
             HttpSession session
 
     ) {
@@ -82,6 +86,7 @@ public class BoardController {
 
 
             BoardDTO boardDTO = new BoardDTO();
+            boardDTO.setCategory(category);
             boardDTO.setTitle(title);
             boardDTO.setContent(content);
             boardDTO.setUser(user);
@@ -175,26 +180,10 @@ public class BoardController {
                 }
             }
 
-
-
         }
-
-
-
-
         boardService.modify(boardDTO);
 
-
-
-
-
-
-
-
         return ResponseEntity.ok().build();
-
-
-
     }
 
     @DeleteMapping("/delete/{bno}")
@@ -205,6 +194,15 @@ public class BoardController {
     }
 
 
+    @GetMapping("/main/recentBoards")
+    public ResponseEntity<List<BoardDTO>> getRecentBoards() {
+
+        List<BoardDTO> recentBoards = boardService.recentBoards();
+
+        return ResponseEntity.ok(recentBoards);
 
 
+
+
+    }
  }

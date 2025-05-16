@@ -2,6 +2,7 @@ package org.dw.springbootcrud.domain;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
@@ -15,6 +16,9 @@ public class Comment extends BaseTimeEntity{
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
+
+    @Size(max = 200, message = "댓글은 200자 이내여야 합니다.")
+    @Column(length = 200)
     private String content;
 
     private boolean anonymous;

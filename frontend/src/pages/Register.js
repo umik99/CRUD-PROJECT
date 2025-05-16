@@ -1,14 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation } from "react-router-dom";
 import {Container, Form, Button} from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { FaTrashAlt } from 'react-icons/fa'; // 휴지통 아이콘
+import '../styles/read.css';
 
 function Register({user}) {
 
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+
+    const category = searchParams.get("category");
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -38,6 +43,7 @@ function Register({user}) {
     try{
 
         const formData = new FormData();
+        formData.append("category",category);
         formData.append("title",title);
         formData.append("content",content);
         formData.append("user",new Blob([JSON.stringify(user)], { type: "application/json" }));;
@@ -60,7 +66,7 @@ function Register({user}) {
         });
 
         alert("등록 성공!")
-        navigate("/board");
+        navigate(`/board/${category}`);
     }catch(error){
         console.error("등록 실패",error);
         alert("등록에 실패했습니다.");
@@ -142,7 +148,7 @@ function Register({user}) {
 
 
     return (
-        <Container className="mt-4 border-info border rounded ">
+        <Container className="mt-4  border board rounded ">
            <div className="mt-4">
              <h3>게시글 작성</h3>
         <Form onSubmit={handleSubmit}>

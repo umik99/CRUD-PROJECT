@@ -79,12 +79,18 @@ function BoardRead({user}){
     
 
         try{
-        const commentDTO = {
+        
+        let commentDTO = {
             content:comment, isAnonymous, 
             writer:user ? user.username : null
         };
 
-        console.log(commentDTO)
+        if (commentDTO.content.length >= 200) {
+            commentDTO.content = commentDTO.content.slice(0, 200);
+            }
+        
+
+
         await axios.post(`/api/comment/${bno}`, commentDTO,{
             withCredentials:true,
             headers :{
@@ -203,7 +209,7 @@ function BoardRead({user}){
         try{
             await axios.delete(`/api/board/delete/${bno}`);
             alert("삭제되었습니다.");
-            window.location.href="/board";
+            window.location.href="/";
         }catch(error){
             console.log("오류 발생");
         }
@@ -239,49 +245,44 @@ function BoardRead({user}){
     
     return(
         
-            <Container className="container-sm mt-5 border border-info rounded my-3">
+        <Container className="container-sm mt-5 border  rounded my-3 board">
                 <div className="mt-2 position-relative border-bottom py-2">
                     <h2 className="text-center">{board.title}</h2>
 
-                    <div className=" top-0 end-0 mt-3 me-2 badge border border-success text-dark p-2 text-start">
+                    <div className=" top-0 end-0 mt-3 me-2 badge border border-primary text-dark p-2 text-start">
                         작성자: {board.writer} | {formatDate(board.regDate)}
                     </div>
                 </div>
                 {/* 슬라이드 */}
                 <div className="card my-3 d-flex justify-content-center text-center" >
-                <Carousel style={{ width:'100%', height: '400px'  }} className="mt-4 w-50 mx-auto border border-success" >
-    {files.length > 0 ? (
-        files.map(file => (
-            <Carousel.Item key={file.savedName}>
-                <img
-                    className="d-block w-100" 
-                    style={{
-                        maxWidth: '1200px',
-                        height: '398px',
-                        objectFit: 'cover',
-                        margin: '0 auto'
-                    }}
-                    src={`http://localhost:8080/uploads/originals/${file.savedName}`}
-                    alt={file.savedName}
-                />
-            </Carousel.Item>
-        ))
-    ) : (
-        <Carousel.Item>
-            <img
-                className="d-block w-100" 
-                style={{
-                    maxWidth: '1200px',
-                    height: '398px',
-                    objectFit: 'cover',
-                    margin: '0 auto'
-                }}
-                src="http://localhost:8080/uploads/originals/default.jpg" // 기본 이미지 경로
-                alt="기본 이미지"
-            />
-        </Carousel.Item>
-    )}
-</Carousel>
+                <Carousel className="custom-carousel mt-4 w-75 mx-auto border border-success" >
+                    {files.length > 0 ? (
+                        files.map(file => (
+                            <Carousel.Item key={file.savedName}>
+                                <img
+                                    className=" carousel-image" 
+                             
+                                    src={`http://localhost:8080/uploads/originals/${file.savedName}`}
+                                    alt={file.savedName}
+                                />
+                            </Carousel.Item>
+                        ))
+                    ) : (
+                        <Carousel.Item>
+                            <img
+                                className="d-block w-100" 
+                                style={{
+                                    maxWidth: '1200px',
+                                    height: '398px',
+                                    objectFit: 'cover',
+                                    margin: '0 auto'
+                                }}
+                                src="http://localhost:8080/uploads/originals/default.jpg" // 기본 이미지 경로
+                                alt="기본 이미지"
+                            />
+                        </Carousel.Item>
+                    )}
+                </Carousel>
 
         
 
@@ -293,8 +294,8 @@ function BoardRead({user}){
                 
                 {user && user.userId === board.user.userId && (
                     <div className="d-flex justify-content-end mb-4 me-4">
-                        <Button type="submit" className="btn btn mx-2" onClick={() =>handleModify(bno)}>Modify</Button>
-                        <Button type="button" className="btn btn-danger" onClick={() =>handleDelete(bno)}>Delete</Button>
+                        <Button type="submit" className="back-button" onClick={() =>handleModify(bno)}>수정하기</Button>
+                        <Button type="button" className="back-button" onClick={() =>handleDelete(bno)}>게시글 삭제</Button>
                     </div>
                     )}
 
@@ -347,7 +348,7 @@ function BoardRead({user}){
                     </div>
                                 
 
-                    <Pagination size="lg" className='justify-content-center'> {pages}</Pagination>
+                    <Pagination className='custom-pagination justify-content-center'> {pages}</Pagination>
 
                     <Form onSubmit={handleSubmit}>
                         <div className="form-group">

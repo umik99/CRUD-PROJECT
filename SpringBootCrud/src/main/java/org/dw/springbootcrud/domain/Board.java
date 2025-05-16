@@ -24,7 +24,7 @@ public class Board extends BaseTimeEntity{
     @Column(length= 500, nullable = false)
     private String title;
 
-    @Column(length=2000, nullable = false)
+    @Column(length=5000, nullable = false)
     private String content;
 
     @ManyToOne(fetch=FetchType.LAZY)
@@ -42,4 +42,7 @@ public class Board extends BaseTimeEntity{
 
     @OneToMany(mappedBy= "board" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UploadFile> files = new ArrayList<>();
+
+    @Column(nullable = true)
+    private String category;
 }

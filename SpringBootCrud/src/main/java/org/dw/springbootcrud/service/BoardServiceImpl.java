@@ -57,10 +57,11 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
-    public PageResponseDTO<BoardDTO> getBoardList(PageRequestDTO requestDTO) {
+    public PageResponseDTO<BoardDTO> getBoardList(String category, PageRequestDTO requestDTO) {
         Pageable pageable = requestDTO.getPageable("bno");
 
-        Page<Board> result = boardSearch.searchAll(
+        Page<Board> result = boardSearch.searchAllByCategory(
+                category,
                 requestDTO.getType(),
                 requestDTO.getKeyword(),
                 pageable
@@ -135,8 +136,9 @@ public class BoardServiceImpl implements BoardService {
 
         Board saved = boardRepository.save(board);
 
-
-        List<UploadFile> uploadFiles = fileService.saveFiles(files, board);
+        if (files != null && files.length > 0) {
+            List<UploadFile> uploadFiles = fileService.saveFiles(files, board);
+        }
 
 /*
         List<String> filePaths = uploadFiles.stream()
@@ -183,4 +185,19 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.delete(board);
     }
 
+
+    @Override
+    public List<BoardDTO> recentBoards() {
+
+        List<Board> boards = boardRepository.findTop5ByOrderByRegDateDesc();
+
+        return boards.stream()
+                .map(board ->{
+
+                    return modelMapper.map(board, BoardDTO.class);
+                }).collect(Collectors.toList());
+
+
+
+    }
 }

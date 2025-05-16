@@ -23,11 +23,11 @@ function Login({setUser}){
         maxRedirects:0
       });
 
-      console.log(response.data)
-      console.log(response.data.username)
+      console.log(response.data);
+      console.log(response.data.username);
       
       setUser(response.data);
-        window.location.href="/board"
+        window.location.href="/"
 
 
 

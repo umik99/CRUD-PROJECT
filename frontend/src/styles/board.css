@@ -1,18 +1,118 @@
-.spread-underline:after {
-    background: none repeat scroll 0 0 transparent;
-    bottom: 0;
-    content: "";
-    display: block;
-    height: 2px;
-    left: 50%;
-    position: absolute;
-    background:#8fd3f4;
-    transition: width 0.3s ease 0s, left 0.3s ease 0s;
-    width: 0;
-  }
-  .spread-underline:hover:after {
-    width: 100%;
-    left: 0;
-  }
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;          /* 세로 가운데 정렬 */
+  justify-content: center;      /* 가로 가운데 정렬 */
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
 
- 
+.search-select {
+
+  padding: 12px 10px;
+  border: none;
+  background-color: #f1f3f8;
+  font-size: 0.9rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 9px 10px;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.search-button {
+  background-color: #f1f3f8;
+  border: none;
+  color: white;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+.search-button:hover {
+  background-color:#bdd3f8;
+}
+
+.badge {
+  font-size: 0.6rem;
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  max-width: 300px;
+}
+
+
+.icon-button:hover {
+  background-color: #e0f7fa;
+}
+
+.write-button {
+  background-color: #4dabf7;
+  text-decoration: none;
+  color: white;
+  border: none;
+  padding: 12px 50px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+.write-button:hover {
+  background-color: #339af0;
+}
+
+.back-button {
+  background-color: 	#dee2e6;          /* 부드러운 연붉은색 */
+  color: white;
+  border: none;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: 	#ced4da;          /* 더 진한 코랄색 */
+}
+
+.accordion-item-custom {
+  transition: all 0.2s ease;
+  border-radius: 12px;
+}
+
+.accordion-item-custom:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #f1f3f5;
+}
+
+.accordion-button {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.title-col {
+  border-left: 2px solid #dee2e6;
+  border-right: 2px solid #dee2e6;
+  padding-left: 10px;
+  padding-right: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.title-col:hover {
+  background-color: #7e7f7f78;
+} 

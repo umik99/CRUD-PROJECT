@@ -10,10 +10,9 @@ import Login from './pages/Login';
 import Signup from'./pages/Signup';
 import Logout from './pages/Logout';
 import BaseLayout from './components/layouts/BaseLayout';
-import 'bootstrap/dist/css/bootstrap.min.css'
 import Register from './pages/Register';
 import Modify from './pages/Modify';
-
+import MainPage from './pages/MainPage';
 function App() {
   
   const [user, setUser] = useState(undefined);
@@ -27,18 +26,12 @@ function App() {
     })
     .catch( error =>{
       if(error.response && error.response.status == 401){
-        console.log("로그인되지 않음");
         setUser(null);
       }
     });
 
   },[]);
 
-  useEffect(()=>{
-    console.log("user 상태 변경")
-    console.log(user)
-
-  },[user])
  
 
   
@@ -47,15 +40,15 @@ function App() {
     {user === undefined  ? (  
       <p>로딩 중...</p>  // 🔥 user 값이 설정될 때까지 로딩 표시
     ) : (
-      <Routes>
+      <Routes >
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/board" element={<BaseLayout user={user}><Board /></BaseLayout>} />
+        <Route path="/board/:category" element={<BaseLayout user={user}><Board /></BaseLayout>} />
         <Route path="/logout" element={<Logout setUser={setUser} />} />
         <Route path="/board/read/:bno" element={<BaseLayout user={user}> <BoardRead user = {user} /></BaseLayout>}/>
         <Route path="/register" element={<BaseLayout user={user}><Register user={user}/></BaseLayout>}></Route>
         <Route path="/modify/:bno" element={<BaseLayout user={user}> <Modify user = {user} /></BaseLayout>}/>
-        <Route path="/" element={<BaseLayout user={user} />}/>
+        <Route path="/" element={<BaseLayout user={user}><MainPage/></BaseLayout>} />
 
       </Routes>
     )}

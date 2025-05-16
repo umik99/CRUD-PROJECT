@@ -57,6 +57,53 @@ public class BoardRepositoryImpl implements BoardSearch{
                     () -> queryFactory.selectFrom(board).where(builder).fetchCount());
         }
 
+    @Override
+    public Page<Board> searchAllByCategory(String category, String type, String keyword, Pageable pageable){
+
+        QBoard board = QBoard.board;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+
+        if (category.equals("etc") || category.isBlank() || category == null){
+            builder.and(board.category.isNull()
+                    .or(board.category.eq("etc")));
+        } else {
+            builder.and(board.category.eq(category));
+        }
+
+        if(keyword !=null && !keyword.isEmpty()) {
+            switch (type) {
+                case "t":
+                    builder.and(board.title.contains(keyword));
+                    break;
+
+                case "c":
+                    builder.and(board.content.contains(keyword));
+                    break;
+
+                case "u":
+                    builder.and(board.writer.username.contains(keyword));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        List<Board> results = queryFactory
+                .selectFrom(board)
+                .where(builder)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.bno.desc())
+                .fetch();
+
+        return PageableExecutionUtils.getPage(results, pageable,
+                () -> queryFactory.selectFrom(board).where(builder).fetchCount());
+    }
+
+
+
 
     }
 

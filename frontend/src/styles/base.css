@@ -1,3 +1,106 @@
 .text-red{
     text-decoration-color:red;
 }
+
+
+.navigation {
+    height: 80px;
+    background-color: white;
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+    flex-wrap: nowrap;
+}
+
+
+  
+.navigation.scrolled {
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 반투명 배경 */
+    backdrop-filter: blur(10px);         /* 유리 느낌 효과 */
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .navigation.scrolled .navbar-brand,
+  .navigation.scrolled .nav-link,
+  .navigation.scrolled .dropdown-toggle,
+  .navigation.scrolled .btn {
+    color: white !important;
+    
+  }
+  
+  /* 드롭다운 메뉴 내부 아이템들도 흰색 */
+  .navigation.scrolled .dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.95);
+  }
+  
+  .navigation.scrolled .dropdown-item {
+    color: white !important;
+  }
+  
+  .navigation.scrolled .dropdown-item:hover {
+    background-color: #333;
+    color: #fff;
+  }
+
+
+  .navigation.scrolled .back-button {
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 반투명 배경 */
+    backdrop-filter: blur(10px);         /* 유리 느낌 효과 */
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navigation.scrolled .back-button:hover {
+background-color: #cfcfcf;  /* 조금 더 어두운 회색 */
+  color: #000;
+  cursor: pointer;
+}
+.back-button {
+    margin-left:7px;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 반투명 배경 */
+
+    color: black;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  .back-button:hover {
+  
+    background-color: rgba(0,0,0, 0.25);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .login-button {
+    background-color: rgba(255, 255, 255, 0.15); /* 반투명 유리 느낌 */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;  /* 수직 가운데 정렬 */
+    justify-content: center; /* 수평 가운데 */
+    height: 38px; /* 높이 고정해서 중앙 정렬 안정화 */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    margin-left: 12px;
+    text-decoration: none;
+  }
+  
+  .kulog-logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* 실제 이미지에 크기 적용 */
+  .logo-img {
+    height: 200px;
+    width: auto;
+    display: block;
+  }
+  

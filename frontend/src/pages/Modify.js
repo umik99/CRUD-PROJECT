@@ -157,7 +157,7 @@ const reorderFiles = (filesArray) => {
       window.history.back();
     };
     return (
-        <Container className="mt-4 border-info border rounded ">
+        <Container className="mt-4 border board rounded ">
            <div className="mt-4">
              <h3>게시글 수정</h3>
         <Form onSubmit={handleSubmit}>
@@ -276,10 +276,10 @@ const reorderFiles = (filesArray) => {
 
 
 
-      <Button className=" mb-3 btn   btn-primary mt-3" type="submit" disabled={isSubmitting}>
+      <Button className=" mx-2 back-button mt-3" type="submit" disabled={isSubmitting}>
           {isSubmitting ? "작성 중..." : "수정하기"}
         </Button>
-        <Button type="button" className=" mx-2 btn btn-danger btn" onClick={handleGoBack}>
+        <Button type="button" className=" mx-2 mt-3 back-button" onClick={handleGoBack}>
                             취소
           </Button>
         </Form>

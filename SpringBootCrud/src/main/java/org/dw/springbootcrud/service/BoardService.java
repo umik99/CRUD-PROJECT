@@ -21,7 +21,7 @@ public interface BoardService {
     //public List<Board> getAllBoards();
 
 
-    public PageResponseDTO<BoardDTO> getBoardList(PageRequestDTO requestDTO);
+    public PageResponseDTO<BoardDTO> getBoardList(String cateogry, PageRequestDTO requestDTO);
 
     public BoardDTO read(Long bno);
 
@@ -32,4 +32,6 @@ public interface BoardService {
     public void deleteBoard(Long bno);
 
     public BoardDTO modify(BoardDTO boardDTO);
+
+    public List<BoardDTO> recentBoards();
 }

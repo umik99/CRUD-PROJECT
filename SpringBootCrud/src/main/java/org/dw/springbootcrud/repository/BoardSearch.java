@@ -6,4 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface BoardSearch  {
     Page<Board> searchAll(String type, String keyword,Pageable pageable);
+
+    public Page<Board> searchAllByCategory(String Category, String type, String keyword, Pageable pageable);
+
 }

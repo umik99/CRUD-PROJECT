@@ -36,8 +36,25 @@
     transform: rotate(360deg);
   }
 }
-body{
-  background-size: cover;  /* 화면에 꽉 차게 */
-  background-position: center;  /* 중앙 정렬 */
-  background-repeat: no-repeat; /* 반복 금지 */
+.custom-pagination .page-link {
+  font-size: 0.9rem;          /* 기본보다 살짝 작게 */
+  padding: 6px 12px;          /* 여백 조절 */
+  color: #555;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition:  0.2s ease;
+}
+
+/* hover 시 */
+.custom-pagination .page-link:hover {
+  background-color: #e2e2e2;
+  color: #000;
+}
+
+/* 활성 페이지 */
+.custom-pagination .page-item.active .page-link {
+  background-color: #555;
+  border-color: #555;
+  color: white;
 }

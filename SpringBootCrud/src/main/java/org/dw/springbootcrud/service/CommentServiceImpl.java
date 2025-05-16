@@ -7,12 +7,16 @@ import org.dw.springbootcrud.config.CommentMapper;
 import org.dw.springbootcrud.domain.Board;
 import org.dw.springbootcrud.domain.Comment;
 import org.dw.springbootcrud.domain.User;
+import org.dw.springbootcrud.dto.BoardDTO;
 import org.dw.springbootcrud.dto.CommentDTO;
 import org.dw.springbootcrud.dto.PageRequestDTO;
 import org.dw.springbootcrud.dto.PageResponseDTO;
+import org.dw.springbootcrud.repository.BoardLikesRepository;
 import org.dw.springbootcrud.repository.BoardRepository;
 import org.dw.springbootcrud.repository.CommentRepository;
 import org.dw.springbootcrud.repository.UserRepository;
+import org.hibernate.annotations.Comments;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +34,10 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
     private final CommentMapper commentMapper;
+    private final ModelMapper modelMapper;
+
     private final UserRepository userRepository;
+    private final BoardLikesRepository boardLikesRepository;
 
 
     @Override
@@ -75,5 +82,34 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(Long id) {
         commentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BoardDTO> recentCommentedBoards() {
+        List<Comment> comments = commentRepository.findTop30ByOrderByRegDateDesc();
+
+        List<Board> boards = comments.stream()
+                .map(Comment::getBoard)
+                .distinct()
+                .limit(5)
+                .collect(Collectors.toList());
+
+
+        return boards.stream()
+                .map(board ->{
+                    BoardDTO boardDTO = modelMapper.map(board, BoardDTO.class);
+
+                    Long likeCount = boardLikesRepository.countByBoard(board);
+                    boardDTO.setLikeCount(likeCount);
+
+                    int replyCount = commentRepository.countByBoard(board);
+                    boardDTO.setReplyCount(replyCount);
+
+                    return boardDTO;
+                })
+                .collect(Collectors.toList());
+
+
+
     }
 }
