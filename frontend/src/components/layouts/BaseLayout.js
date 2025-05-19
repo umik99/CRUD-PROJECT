@@ -49,11 +49,17 @@ function BaseLayout({ children, user }) {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav>
-            <Nav.Link href="/">Category</Nav.Link>
+            <NavDropdown title="Category">
+              <NavDropdown.Item href="/board/osaka">오사카</NavDropdown.Item>
+              <NavDropdown.Item href="/board/tokyo">도쿄</NavDropdown.Item>
+              <NavDropdown.Item href="/board/fukuoka">후쿠오카</NavDropdown.Item>
+              <NavDropdown.Item href="/board/hokkaido">홋카이도</NavDropdown.Item>
+              <NavDropdown.Item href="/board/etc">기타</NavDropdown.Item>
+            </NavDropdown>
             {user ? (
               <NavDropdown title={user.username} id="basic-nav-dropdown" className='mypage'>
                 <NavDropdown.Item href="/">Mypage</NavDropdown.Item>
-                <NavDropdown.Item href="/">Bookmarks</NavDropdown.Item>
+                <NavDropdown.Item href="/bookmark">Bookmarks</NavDropdown.Item>
                 <NavDropdown.Item
                   href="/logout"
                   style={{ color: "red" }}

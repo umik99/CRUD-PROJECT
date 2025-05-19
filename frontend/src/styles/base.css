@@ -40,6 +40,11 @@
     background-color: #333;
     color: #fff;
   }
+ 
+.navigation.scrolled .dropdown-item.active {
+  background-color: #333 !important;
+  color: #fff !important;
+}
 
 
   .navigation.scrolled .back-button {
@@ -95,8 +100,11 @@ background-color: #cfcfcf;  /* 조금 더 어두운 회색 */
   .kulog-logo {
     display: flex;
     align-items: center;
-  }
-  
+    height: 80px;           /* 원하는 높이로 제한 */
+  overflow: hidden;       /* 클릭 영역 잘라내기 */
+  padding: 0 !important;  /* 내부 padding 제거 */
+ 
+}
   /* 실제 이미지에 크기 적용 */
   .logo-img {
     height: 200px;

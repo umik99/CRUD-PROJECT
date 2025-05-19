@@ -13,6 +13,9 @@ import BaseLayout from './components/layouts/BaseLayout';
 import Register from './pages/Register';
 import Modify from './pages/Modify';
 import MainPage from './pages/MainPage';
+import Bookmark from './pages/Bookmark';
+
+
 function App() {
   
   const [user, setUser] = useState(undefined);
@@ -48,6 +51,7 @@ function App() {
         <Route path="/board/read/:bno" element={<BaseLayout user={user}> <BoardRead user = {user} /></BaseLayout>}/>
         <Route path="/register" element={<BaseLayout user={user}><Register user={user}/></BaseLayout>}></Route>
         <Route path="/modify/:bno" element={<BaseLayout user={user}> <Modify user = {user} /></BaseLayout>}/>
+        <Route path="/bookmark" element= {<BaseLayout user={user}><Bookmark user ={user}></Bookmark></BaseLayout>}/>
         <Route path="/" element={<BaseLayout user={user}><MainPage/></BaseLayout>} />
 
       </Routes>

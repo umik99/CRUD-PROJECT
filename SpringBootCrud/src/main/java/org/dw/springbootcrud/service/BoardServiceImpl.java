@@ -56,6 +56,9 @@ public class BoardServiceImpl implements BoardService {
     private UploadFileRepository uploadFileRepository;
 
 
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
+
     @Override
     public PageResponseDTO<BoardDTO> getBoardList(String category, PageRequestDTO requestDTO) {
         Pageable pageable = requestDTO.getPageable("bno");
@@ -79,6 +82,7 @@ public class BoardServiceImpl implements BoardService {
                             }.getType());
 
                     BoardDTO dto = modelMapper.map(board, BoardDTO.class);
+                    dto.setBookmarked(null);
                     dto.setLikeCount(likeCount);
                     dto.setReplyCount(replyCount);
                     dto.setFiles(uploadFileDTOS);
@@ -95,7 +99,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDTO read(Long bno) {
+    public BoardDTO read(Long bno, User user) {
         Board board = boardRepository.getOne(bno);
 
 
@@ -106,6 +110,15 @@ public class BoardServiceImpl implements BoardService {
                 .stream()
                 .map(file ->new UploadFileDTO(file.getSavedName(), file.getFileOrder()))
                 .collect(Collectors.toList());
+
+
+        if (user != null) {
+            boolean bookmarked = bookmarkRepository.existsByUserAndBoard(user, board);
+            boardDTO.setBookmarked(bookmarked);
+        } else {
+            boardDTO.setBookmarked(false);
+        }
+
 
         boardDTO.setFiles(fileDTOs);
         boardDTO.setRemoveFiles(null);
@@ -194,7 +207,13 @@ public class BoardServiceImpl implements BoardService {
         return boards.stream()
                 .map(board ->{
 
-                    return modelMapper.map(board, BoardDTO.class);
+                    BoardDTO boardDTO =  modelMapper.map(board, BoardDTO.class);
+                    Long likeCount = boardLikesRepository.countByBoard(board);
+                    boardDTO.setLikeCount(likeCount);
+
+                    int replyCount = commentRepository.countByBoard(board);
+                    boardDTO.setReplyCount(replyCount);
+                    return boardDTO;
                 }).collect(Collectors.toList());
 
 

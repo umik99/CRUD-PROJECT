@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.dw.springbootcrud.domain.Board;
+import org.dw.springbootcrud.domain.User;
 import org.dw.springbootcrud.dto.*;
 import org.dw.springbootcrud.repository.BoardRepository;
 import org.dw.springbootcrud.repository.UploadFileRepository;
@@ -54,6 +55,8 @@ public class BoardController {
 
         Set<Long> viewed = (Set<Long>) session.getAttribute("viewedPosts");
 
+        User user = (User) session.getAttribute("user");
+
         if (viewed == null) {
             viewed = new HashSet<>();
             session.setAttribute("viewedPosts", viewed);
@@ -66,7 +69,7 @@ public class BoardController {
         }
 
 
-        return boardService.read(bno);
+        return boardService.read(bno, user);
     }
 
     @Operation(summary="Board create" , description="Board create")

@@ -3,6 +3,7 @@ package org.dw.springbootcrud.service;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.dw.springbootcrud.domain.Board;
+import org.dw.springbootcrud.domain.User;
 import org.dw.springbootcrud.dto.BoardDTO;
 import org.dw.springbootcrud.dto.PageRequestDTO;
 import org.dw.springbootcrud.dto.PageResponseDTO;
@@ -23,7 +24,7 @@ public interface BoardService {
 
     public PageResponseDTO<BoardDTO> getBoardList(String cateogry, PageRequestDTO requestDTO);
 
-    public BoardDTO read(Long bno);
+    public BoardDTO read(Long bno, User user);
 
     public void register(BoardDTO boardDTO, MultipartFile[] files, HttpSession session) throws IOException;
 

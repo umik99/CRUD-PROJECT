@@ -45,4 +45,8 @@ public class Board extends BaseTimeEntity{
 
     @Column(nullable = true)
     private String category;
+
+    @OneToMany(mappedBy = "board" , cascade = CascadeType.REMOVE ,orphanRemoval = true)
+    @ToString.Exclude
+    private List<Bookmark> bookmarked = new ArrayList<>();
 }

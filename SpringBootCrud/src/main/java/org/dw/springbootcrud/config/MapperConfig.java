@@ -23,8 +23,14 @@ public class MapperConfig {
             mapper.map(src -> src.getWriter().getUsername(), BoardDTO::setWriter);
         });
 
+        modelMapper.typeMap(Board.class, BoardDTO.class)
+                .addMappings(mapper -> mapper.skip(BoardDTO::setBookmarked));
+
         return modelMapper;
+
+
     }
+
 
 }
 

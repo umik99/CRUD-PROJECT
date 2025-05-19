@@ -30,7 +30,7 @@ function Board(){
     const currentPage = parseInt(searchParams.get("page")) || 1; // 기
     // 본값 1
 
-    const location = useLocation(); // 🔥 URL 변경 감지용!
+    const location = useLocation(); 
 
     const [type, setType] = useState(typeFromURL);
     const [keyword, setKeyword] = useState(keywordFromURL);

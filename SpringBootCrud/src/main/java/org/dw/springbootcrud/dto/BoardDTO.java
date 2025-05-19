@@ -35,7 +35,7 @@ public class BoardDTO {
     private String category;
 
 
-
+    private Boolean bookmarked;
 
     private List<FileMetaDTO> meta; //수정용
 

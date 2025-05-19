@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/board/**", "/api/board", "/api/board/like/**").permitAll()
                         .requestMatchers("/api/signup","/api/logout", "/api/login" , "/api/user").permitAll()
                         .requestMatchers("/api/comment/**").permitAll()
+                        .requestMatchers("/api/bookmark/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/api/mypage/**").hasAnyRole("ADMIN", "USER")

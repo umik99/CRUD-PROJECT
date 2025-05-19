@@ -3,7 +3,9 @@ import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import BaseLayout from '../components/layouts/BaseLayout';
 import {Pagination, Row, Col, Card, Button, Container, Carousel, Form} from 'react-bootstrap';
+import bookmark from '../img/bookmark.png';
 import '../styles/read.css';
+
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -16,6 +18,7 @@ const formatDate = (dateString) => {
       hour12: false
     }).format(date).replace(/\./g, '-').replace(/\s/g, '');
   };
+
 
 
 
@@ -43,6 +46,7 @@ function BoardRead({user}){
     const [next, setNext] = useState(true);
     const [files, setFiles]  =useState([]);
 
+    const [bookmarked, setBookmarked]= useState(false);
     
     
     useEffect(()=>{
@@ -54,8 +58,9 @@ function BoardRead({user}){
 
                 setBoard(response.data)
                 setLoading(false);
-
+                setBookmarked(response.data.bookmarked);
                 setFiles(response.data.files)
+
             
                 
             } else{
@@ -139,8 +144,36 @@ function BoardRead({user}){
           console.error("댓글 데이터 요청 중 오류:", error);
         });
       };
+      
+      
+      
+      const handleLikeClick = async () => {
+          try{
+              await axios.post(`/api/board/like/${bno}`, {}, { withCredentials: true });
   
+              const response = await axios.get(`/api/board/like/${bno}`);
+              setLikeCount(response.data);
+          }catch(error){
+              console.error("Error fetching board: ",error);
+              alert("로그인한 회원만 좋아요가 가능합니다.");
+              
+      
+          };
+      };
+      
+      const handleBookmarkClick = async ()=>{
+        try{
 
+        await axios.post(`/api/bookmark/${bno}`, {}, {withCredentials: true});
+        
+        setBookmarked(!bookmarked);
+        
+
+        }catch(error){
+            alert("로그인한 회원만 저장 가능합니다.");
+        }
+
+    };
 
     
      useEffect(() =>{
@@ -166,11 +199,11 @@ function BoardRead({user}){
         pages.push(
             <Pagination.Next disabled={next===false}
                 onClick={() =>handlePageChange(end+1)}
-            />
+                />
         )
       
         //페이지 변경 처리
-    const handlePageChange = (pageNumber) =>{
+        const handlePageChange = (pageNumber) =>{
         setCurrentPage(pageNumber);
              
           }
@@ -187,20 +220,6 @@ function BoardRead({user}){
     },[]);
         
       
-    
-    const handleLikeClick = async () => {
-        try{
-            await axios.post(`/api/board/like/${bno}`, {}, { withCredentials: true });
-
-            const response = await axios.get(`/api/board/like/${bno}`);
-            setLikeCount(response.data);
-        }catch(error){
-            console.error("Error fetching board: ",error);
-            alert("로그인한 회원만 좋아요가 가능합니다.");
-            
-    
-        };
-    };
 
     const handleDelete = async(bno) =>{
         const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
@@ -246,12 +265,22 @@ function BoardRead({user}){
     return(
         
         <Container className="container-sm mt-5 border  rounded my-3 board">
-                <div className="mt-2 position-relative border-bottom py-2">
+                <div className="mt-2 position-relative border-bottom py-2 justify-content-between ">
                     <h2 className="text-center">{board.title}</h2>
 
-                    <div className=" top-0 end-0 mt-3 me-2 badge border border-primary text-dark p-2 text-start">
-                        작성자: {board.writer} | {formatDate(board.regDate)}
-                    </div>
+                   <div className="d-flex justify-content-between text-muted small px-2 mt-3">
+                {/* 왼쪽: 조회수, 댓글수, 좋아요 */}
+                <div>
+                    조회수 {board.viewCount} &nbsp;&nbsp;
+                  
+                </div>
+
+                {/* 오른쪽: 작성자, 날짜 */}
+                <div>
+                    작성자 :  {board.writer} &nbsp;|&nbsp;  {formatDate(board.regDate)}
+                </div>
+                </div>
+                    
                 </div>
                 {/* 슬라이드 */}
                 <div className="card my-3 d-flex justify-content-center text-center" >
@@ -306,8 +335,28 @@ function BoardRead({user}){
                     onClick={handleLikeClick}
                 >
                     ❤️ 좋아요 ({likeCount})
+                    
+                </button>
+                <button
+                    className={`btn mx-2 btn-sm bookmark-button ${
+                        bookmarked ? 'btn-secondary text-white' : 'btn-outline-secondary'
+                    }`}
+                    onClick={handleBookmarkClick}
+                    >
+                    <img
+                        src={bookmark}
+                        style={{
+                        background: 'none',
+                        height: '20px',
+                        filter: bookmarked ? 'grayscale(0%)' : 'grayscale(100%)',
+                        marginRight: '6px',
+                        }}
+                        alt="bookmark icon"
+                    />
+                    {bookmarked ? '저장됨' : '저장'}
                 </button>
                 </div>
+               
                 </div>
 
 

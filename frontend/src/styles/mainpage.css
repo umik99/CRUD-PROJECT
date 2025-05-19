@@ -1,0 +1,138 @@
+.intro-section {
+    padding: 80px 20px 40px; /* 상단 여백: navbar와 겹치지 않게 */
+    text-align: center;
+    background-color: #c0c0c0;
+    color: #333;
+  }
+  .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 40px 20px;
+    align-items: center; /* 리스트 전체 가운데 정렬 */
+  }
+  
+  .category-item {
+    width: 90%;               /* 가로 너비 줄이기 (예: 90% of container) */
+    max-width: 740px;         /* 데스크탑에서 너무 길어지지 않도록 제한 */
+    height: 220px;            /* 세로 길이 키우기 */
+    display: flex;
+    align-items: center;      /* 수직 중앙 */
+    justify-content: center;  /* 수평 중앙 */
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+  }
+  
+  .category-item:hover {
+    transform: translateY(-10px);
+  }
+  
+  .category-item img {
+    width: 330px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 24px;
+  }
+  
+  .text-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .text-content h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  .text-content p {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: #666;
+    text-align: center;
+  }
+  @media (max-width: 768px) {
+    .category-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .category-item img {
+      width: 100%;
+      height: 180px;
+    }
+  
+    .text-content {
+      padding: 12px 16px;
+    }
+  }
+
+  .post-section {
+    background-color: rgb(65, 118, 175, 0.9); /* 살짝 회색 배경 */
+    padding: 60px 20px;
+  }
+  
+  .post-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+    justify-content: center;
+  }
+  
+  .post-block {
+    flex: 1 1 400px;
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .post-block h2 {
+    margin-bottom: 16px;
+    font-size: 1.25rem;
+    color: #333;
+  }
+  
+  .post-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .post-block li {
+    margin-bottom: 10px;
+  }
+  
+  .post-block a {
+    color: #444;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .post-block a:hover {
+    color: #1dadf0; /* 강조색 */
+  }
+  .board-item {
+    transition: all 0.2s ease;
+  }
+  
+  .board-item:hover {
+    background-color: #f1f3f5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  .badge {
+    font-size: 0.6rem;
+    padding: 3px 5px;
+    border-radius: 3px;
+  }

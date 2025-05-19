@@ -37,4 +37,10 @@ public class User {
 
     @OneToMany(mappedBy="writer", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
+
+
+    @OneToMany(mappedBy="user" , cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
+
 }

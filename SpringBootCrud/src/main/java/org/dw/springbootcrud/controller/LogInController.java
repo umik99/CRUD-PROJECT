@@ -105,7 +105,7 @@ public class LogInController {
 
         User user=userService.processOAuthPostLogin(email, name, session);
 
-        response.sendRedirect("http://localhost:3000/board");
+        response.sendRedirect("http://localhost:3000/");
 
     }
 }

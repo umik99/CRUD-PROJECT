@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing
-public class SpringBootCrudApplication {
+public class KULOG {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootCrudApplication.class, args);
+        SpringApplication.run(KULOG.class, args);
     }
 
 }
