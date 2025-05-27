@@ -1,0 +1,20 @@
+.custom-menu-item {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 8px 16px;
+  font-size: 15px;
+  transition:0.18s, color 0.18s;
+}
+
+.custom-menu-item:hover, .custom-menu-item:focus {
+  background: #f6f7fa;
+  color: #1a72ef;
+  cursor: pointer;
+}
+
+.menu-divider {
+  margin: 2px 0;
+  border-top: 1px solid #e5e5e5;
+}

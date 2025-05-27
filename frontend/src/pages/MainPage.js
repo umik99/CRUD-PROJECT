@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
+
 import '../styles/mainpage.css';
 import  osakaImg from '../img/오사카.jpeg';
 import  tokyoImg from '../img/도쿄.jpeg';
 import  fukuokaImg from '../img/후쿠오카.jpeg';
 import  hokkaidoImg from '../img/홋카이도.jpeg';
 import others from '../img/기타.jpeg';
+import defaultIMG from '../img/default_profile.png';
 
 export default function MainPage() {
   const isLoggedIn = false;
@@ -18,7 +20,9 @@ export default function MainPage() {
     { title: "후쿠오카", image: fukuokaImg, link: "/board/fukuoka" },
     { title: "홋카이도", image: hokkaidoImg, link: "/board/hokkaido" },
     // ...
-  ];
+  ];    
+  const baseImageUrl = "http://localhost:8080/uploads/profiles/";
+
 
  
 
@@ -30,7 +34,6 @@ export default function MainPage() {
           
           setBoardList(response.data || []);
 
-          
 
       })
       .catch(error =>{
@@ -47,7 +50,6 @@ export default function MainPage() {
         
         setCommentedBoardList(response.data || []);
 
-        
 
     })
     .catch(error =>{
@@ -110,8 +112,25 @@ const isNew = (regDate) => {
             ❤️ {board.likeCount}
           </span>
           <span className="text-muted small">
-           {board.writer}
-          </span>
+            
+          <div className="d-flex align-items-center ">
+
+                            <img
+                                src={board.writerProfileImg? baseImageUrl + board.writerProfileImg : defaultIMG}
+                                alt="프로필"
+                                className="rounded-circle mb-2 mx-2"
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    objectFit: 'cover',
+                                    border: '1.5px solid #dee2e6',
+                                
+                            }}
+                            />
+                          
+                        {board.writer}
+                        </div>          
+                  </span>
         </div>
       </a>
     </li>
@@ -139,7 +158,24 @@ const isNew = (regDate) => {
                     ❤️ {board.likeCount}
                   </span>
                   <span className="text-muted small">
+                  
+                   <div className="d-flex align-items-center ">
+
+                                <img
+                                    src={board.writerProfileImg? baseImageUrl + board.writerProfileImg : defaultIMG}
+                                    alt="프로필"
+                                    className="rounded-circle mb-2 mx-2"
+                                    style={{
+                                        width: '40px',
+                                        height: '40px',
+                                        objectFit: 'cover',
+                                        border: '1.5px solid #dee2e6',
+                                    
+                                }}
+                                />
+                              
                   {board.writer}
+                  </div>
                   </span>
                 </div>
               </a>

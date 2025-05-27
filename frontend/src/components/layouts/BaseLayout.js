@@ -1,12 +1,12 @@
 
 import {React, useEffect, useState} from 'react';
 
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import KULOG from '../../img/KULOG.png';
 import KULOGsc from '../../img/KULOGsc.png';
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft , FaRegCommentDots} from "react-icons/fa";
 
 
 import {Navbar, NavDropdown, Nav, Container, Button} from 'react-bootstrap';
@@ -14,8 +14,10 @@ import '../../styles/base.css';
 
 function BaseLayout({ children, user }) {
 
+  const navigate = useNavigate();
 
     useEffect(() =>{
+      
     },[user]);
 
     const handleGoBack = () => {
@@ -36,10 +38,10 @@ function BaseLayout({ children, user }) {
     
     return (
         <div >
-            <Navbar
+    <Navbar
+      
       user={user}
       className={`navigation ${scrolled ? "scrolled" : ""}`}
-      
       fixed="top"
     >
       <Container>
@@ -48,7 +50,7 @@ function BaseLayout({ children, user }) {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav>
+          <Nav className='me-auto'>
             <NavDropdown title="Category">
               <NavDropdown.Item href="/board/osaka">오사카</NavDropdown.Item>
               <NavDropdown.Item href="/board/tokyo">도쿄</NavDropdown.Item>
@@ -57,8 +59,8 @@ function BaseLayout({ children, user }) {
               <NavDropdown.Item href="/board/etc">기타</NavDropdown.Item>
             </NavDropdown>
             {user ? (
-              <NavDropdown title={user.username} id="basic-nav-dropdown" className='mypage'>
-                <NavDropdown.Item href="/">Mypage</NavDropdown.Item>
+              <NavDropdown title={user.nickname} id="basic-nav-dropdown" className='mypage'>
+                <NavDropdown.Item href="/mypage">Mypage</NavDropdown.Item>
                 <NavDropdown.Item href="/bookmark">Bookmarks</NavDropdown.Item>
                 <NavDropdown.Item
                   href="/logout"
@@ -75,6 +77,17 @@ function BaseLayout({ children, user }) {
                 Log In
               </Nav.Link>
             )}
+            </Nav>
+            <Nav>
+            <Button
+          variant="outline-secondary"
+          className="icon-btn"
+          onClick={() => navigate('/chat')}
+          title="채팅"
+        >
+          <FaRegCommentDots style={{ fontSize: '1.1rem', verticalAlign: 'middle' }} />
+        </Button>
+
             <Button className="back-button"  onClick={handleGoBack}>
             <FaArrowLeft />
             </Button>

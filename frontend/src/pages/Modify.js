@@ -12,13 +12,27 @@ function Modify({user}){
     const navigate = useNavigate();
 
     const location = useLocation();
-
+    
     const board = location.state?.board;
+    const authorizedToEdit = location.state?.authorizedToEdit;
+    
+
+
+    useEffect(() => {
+  if (!board || !authorizedToEdit) {
+    alert("잘못된 접근입니다.");
+    navigate("/");
+  }
+}, [board, authorizedToEdit, navigate]);
+
+
+
+
     const existingFiles = location.state?.files || [];
 
 
-    const [title, setTitle] = useState(board.title);
-    const [content, setContent] = useState(board.content);
+    const [title, setTitle] = useState(board?.title||'');
+    const [content, setContent] = useState(board?.content||'');
     const [isSubmitting, setIsSubmitting] = useState(false);
    
     const [allFiles , setAllFiles] = useState(() =>
@@ -34,14 +48,15 @@ function Modify({user}){
 
 
     useEffect(() =>{
-        if (!user){
+        if (!user ){
             
             alert("로그인이 필요합니다.");
             navigate("/login");
         }
 
     },[user, navigate]);
-    
+  
+
   
 
     const handleSubmit= async (e) =>{
@@ -156,7 +171,7 @@ const reorderFiles = (filesArray) => {
     const handleGoBack = () => {
       window.history.back();
     };
-    return (
+return (
         <Container className="mt-4 border board rounded ">
            <div className="mt-4">
              <h3>게시글 수정</h3>

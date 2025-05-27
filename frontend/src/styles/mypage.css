@@ -1,0 +1,98 @@
+.mypage-container {
+  max-width: 500px;
+  margin-top: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  padding: 2rem;
+  background-color: #f8f9fa; /* 뉴트럴 그레이톤 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mypage-title {
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  border: 2px solid #ddd;
+}
+
+.nickname {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.menu-link {
+  width: 100%;
+  text-decoration: none;
+}
+
+.menu-button {
+  width: 100%;
+  padding: 0.75rem;
+  font-weight: 500;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-button:hover {
+  background-color: #e9ecef;
+  border-color: #bbb;
+}
+.delete-button{
+      width: 100%;
+  padding: 0.75rem;
+  font-weight: 500;
+  color: red;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease-in-out;
+}
+
+.delete-button:hover {
+  background-color: #e9ecef;
+  border-color: #bbb;
+  color:red;
+}
+.profile-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ced4da; /* 연한 회색 테두리 */
+  background-color: #f8f9fa;
+  margin-bottom: 10px;
+}
+.profile-button-group .custom-btn {
+  width: 200px;              /* ✅ 원하는 너비 */
+  height: 40px;              /* ✅ 높이 통일 */
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* 선택 버튼 */
+.profile-button-group .custom-btn.btn-outline-secondary:hover {
+  background-color: #dee2e6;
+  color: #212529;
+}
+
+/* 기본 이미지 버튼 */
+.profile-button-group .custom-btn.btn-outline-danger:hover {
+  background-color: #ffe3e3;
+  color: #e03131;
+}

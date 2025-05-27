@@ -1,9 +1,12 @@
-import React, { useEffect, useState} from 'react';
+import React, {  useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import BaseLayout from '../components/layouts/BaseLayout';
 import {Pagination, Row, Col, Card, Button, Container, Carousel, Form} from 'react-bootstrap';
 import bookmark from '../img/bookmark.png';
+import defaultIMG from '../img/default_profile.png';
+import WriterPopoverProfile from '../components/WriterPopoverProfile';
+import CommentWriterPopoverProfile from '../components/CommentWriterPopoverProfile';
 import '../styles/read.css';
 
 
@@ -38,6 +41,8 @@ function BoardRead({user}){
     
     const [likeCount, setLikeCount] = useState(0);
 
+    const [openMenuBno, setOpenMenuBno] =useState(null);
+    const [openMenuCommentId, setOpenMenuCommentId] = useState(null);
 
     const [commentList, setCommentList] = useState([]);
     const [end, setEnd] = useState(1);
@@ -48,7 +53,8 @@ function BoardRead({user}){
 
     const [bookmarked, setBookmarked]= useState(false);
     
-    
+    const baseImageUrl = "http://localhost:8080/uploads/profiles/";
+
     useEffect(()=>{
         axios.get(`/api/board/read/${bno}`
         
@@ -130,7 +136,6 @@ function BoardRead({user}){
             withCredentials: true
           })
         .then(response => {
-            
             
             setCommentList(response.data.dtoList||[]);
 
@@ -228,7 +233,7 @@ function BoardRead({user}){
         try{
             await axios.delete(`/api/board/delete/${bno}`);
             alert("삭제되었습니다.");
-            window.location.href="/";
+            window.location.replace("/");
         }catch(error){
             console.log("오류 발생");
         }
@@ -251,7 +256,7 @@ function BoardRead({user}){
 
 
     const handleModify = async(bno) =>{
-      navigate(`/modify/${bno}`,{state:{board , files}})
+      navigate(`/modify/${bno}`,{state:{board , files ,authorizedToEdit: true }})
    
    }
 
@@ -277,7 +282,24 @@ function BoardRead({user}){
 
                 {/* 오른쪽: 작성자, 날짜 */}
                 <div>
-                    작성자 :  {board.writer} &nbsp;|&nbsp;  {formatDate(board.regDate)}
+                     
+                                
+                <div className="d-flex align-items-center ">
+                    
+
+                            <WriterPopoverProfile
+                                    key={board.bno}
+                                    board={board}
+                                    baseImageUrl={baseImageUrl}
+                                    defaultIMG={defaultIMG}
+                                    user={user}
+                                    isMenuOpen={openMenuBno === board.bno}
+                                    onOpenMenu={() => setOpenMenuBno(board.bno)}
+                                    onCloseMenu={() => setOpenMenuBno(null)}/>
+                                    &nbsp;|&nbsp;  {formatDate(board.regDate)}
+
+                </div>                    
+                        
                 </div>
                 </div>
                     
@@ -371,7 +393,25 @@ function BoardRead({user}){
                         <Card.Body>
                             <Row className="mb-2">
                             <Col xs={6} className="fw-bold">
-                                🖋 {comment.writer}
+                                
+
+                            {comment.commentWriterProfileImg === 'anonymous' && (<label className="mx-2 mb-1">{comment.writer}</label> )}
+
+                            { comment.commentWriterProfileImg !== 'anonymous' && (
+                            <div className="d-flex align-items-center ">
+                                <CommentWriterPopoverProfile
+                                    user={user}
+                                    key={comment.id}
+                                    comment ={comment}
+                                    baseImageUrl={baseImageUrl}
+                                    defaultIMG={defaultIMG}
+                                    isMenuOpen={openMenuCommentId === comment.id}
+                                    onOpenMenu={() => setOpenMenuCommentId(comment.id)}
+                                    onCloseMenu={() => setOpenMenuCommentId(null)}/>
+                        </div>
+                        )}
+
+                                
                             </Col>
                             <Col xs={6} className="text-end text-muted" style={{ fontSize: '0.85rem' }}>
                                 {formatDate(comment.regDate)}
@@ -401,11 +441,23 @@ function BoardRead({user}){
 
                     <Form onSubmit={handleSubmit}>
                         <div className="form-group">
-                    {/* label은 위에 */}
                         {user && (
-                            <label className="mx-2 mb-1"> {user.username}</label>
+                        <div className="d-flex align-items-center ms-2">
+                            <img
+                            src={user.profileImage ? baseImageUrl + user.profileImage : defaultIMG}
+                            alt="프로필"
+                            className="rounded-circle mb-2"
+                            style={{
+                                width: '50px',
+                                height: '50px',
+                                objectFit: 'cover',
+                                border: '1.5px solid #dee2e6',
+                                
+                            }}
+                            />
+                            <label className="mx-2 mb-1">{user.nickname}</label>
+                        </div>
                         )}
-
                         {/* textarea + button 나란히 배치 */}
                         <div className="d-flex align-items-center">
                             <textarea

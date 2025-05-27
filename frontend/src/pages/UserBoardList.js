@@ -24,32 +24,22 @@ const formatDate = (dateString) => {
   };
 
 
-function Bookmark({user}){
+function UserBoardList(){
 
     
-    const [bookmarkList, setBookmarkList] = useState([]);
+    const [boardList, setBoardList] = useState([]);
     const [end, setEnd] = useState(1);
     const [start, setStart] = useState(1);
     const [prev, setPrev] = useState(false);
     const [next, setNext] = useState(true);
     const [currentPage , setCurrentPage] = useState(1);
     
-    const [selectMode, setSelectMode] = useState(false);
-    const [selected, setSelected] = useState([]);
-    const [selectAll, setSelectAll] = useState(false);
-    
+    const {uuid} = useParams();
+
     
     const navigate = useNavigate();
 
 
-    useEffect(() =>{
-        if (!user){
-            
-            alert("로그인이 필요합니다.");
-            navigate("/login");
-    }
-
-    },[user, navigate]);
 
     /* 페이지처리 */
     let pages=[];   
@@ -86,18 +76,20 @@ function Bookmark({user}){
         
     
 
-        axios.get(`/api/bookmark/list`, 
+        axios.get(`/api/board/list/${uuid}`, 
             {
                 params: {
                     page:currentPage,
-                    size: 10},
+                    size: 10,
+                   
+                },
                   
             withCredentials: true
           })
         .then(response => {
             
             
-            setBookmarkList(response.data.dtoList||[]);
+            setBoardList(response.data.dtoList||[]);
 
             setEnd(response.data.end);
             setStart(response.data.start);
@@ -113,102 +105,22 @@ function Bookmark({user}){
       
 
 
-    /* 북마크 수정하기 */
-    const toggleSelectMode = () =>{
-        setSelectMode(!selectMode);
-        setSelected([]);
-        setSelectAll(false);
-        console.log(selectMode);
-    };
-
-    const toggleSelect = (bno) =>{
-        setSelected(prev =>
-            prev.includes(bno) ? prev.filter(id => id !==bno ) : [...prev , bno]
-
-        );
-    };
-
-    const handleSelectAll = () =>{
-        if(!selectAll){
-            setSelected(bookmarkList.map (b => b.bno));
-
-        }else{
-            setSelected([]);
-        }
-        setSelectAll(!selectAll);
-    };
-
-    const handleDelete = () =>{
-        axios.post(`/api/bookmark/delete`, selected, {
-            withCredentials:true,
-        })
-        .then(() =>{
-            setBookmarkList(prev => prev.filter(item => !selected.includes(item.bno)))
-            setSelected([]);
-        })
-        .catch(err =>{
-            console.error("삭제 실패",err);
-        });
-
-    }
+   
 
     return(
         <Container className="w-75 mt-4 border flex-column rounded board">
      
-            <h2 className="text-center">Bookmarks</h2>
+    <h2 className="text-center">작성글 목록</h2>
 
         
-       {selectMode && (
-            <div className="d-flex justify-content-between align-items-center mb-3">
-                {/* 왼쪽: 전체 선택 */}
-                <div className="form-check">
-                <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="selectAll"
-                    checked={selectAll}
-                    onChange={handleSelectAll}
-                />
-                <label className="form-check-label ms-2" htmlFor="selectAll">
-                    전체 선택
-                </label>
-                </div>
-
-                {/* 오른쪽: 편집 버튼 */}
-                <button
-                className="btn btn-sm btn-outline-secondary"
-                onClick={toggleSelectMode}
-                >
-                완료
-                </button>
-            </div>
-        )}
-
-        {!selectMode && (
-            <div className="d-flex justify-content-end mb-3">
-                <button
-                className="btn btn-sm btn-outline-secondary"
-                onClick={toggleSelectMode}
-                >
-                편집
-                </button>
-            </div>
-        )}
 
 
-        {bookmarkList.map((board) => (
+        {boardList.map((board) => (
                 <div key={board.bno} className="bookmark-item d-flex flex-column py-3 border-bottom">
                 {/* 제목 + 댓글 + 좋아요 */}
                 <div className="d-flex justify-content-between align-items-center">
                 <div className= "d-flex align-items-start">
-                {selectMode && (
-                    <input
-                    type="checkbox"
-                    checked={selected.includes(board.bno)}
-                    onChange={() => toggleSelect(board.bno)}
-                    className="form-check-input me-2"
-                    />
-                )}
+           
 
                     <a
                     href={`/board/read/${board.bno}`}
@@ -248,12 +160,7 @@ function Bookmark({user}){
             </div>
             ))}
 
-        {selectMode && selected.length > 0 && (
-        <div className="d-flex justify-content-between align-items-center mt-4">
-          <span className="text-muted small">선택된 항목: {selected.length}개</span>
-          <button className="btn btn-danger btn-sm" onClick={handleDelete}>삭제하기</button>
-        </div>
-      )}
+     
         
         
         <div className="mt-5 d-flex justify-content-center">
@@ -271,4 +178,4 @@ function Bookmark({user}){
 
 }
 
-export default Bookmark
+export default UserBoardList

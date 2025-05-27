@@ -23,8 +23,7 @@ function Login({setUser}){
         maxRedirects:0
       });
 
-      console.log(response.data);
-      console.log(response.data.username);
+
       
       setUser(response.data);
         window.location.href="/"
@@ -35,7 +34,7 @@ function Login({setUser}){
         
     
     }catch(error){
-      alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+      alert(error.response.data);
 
       console.error(error);
     }
@@ -126,7 +125,7 @@ function Login({setUser}){
                       <button
                         type="button"
                         className="btn btn-warning border d-flex align-items-center gap-2"
-                        style={{
+                         style={{
                           padding: '10px 20px',
                           fontSize: '16px',
                           color: 'black',

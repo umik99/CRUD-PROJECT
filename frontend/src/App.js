@@ -14,11 +14,18 @@ import Register from './pages/Register';
 import Modify from './pages/Modify';
 import MainPage from './pages/MainPage';
 import Bookmark from './pages/Bookmark';
+import Mypage from './pages/Mypage';
+import NicknameChange from './pages/NicknameChange';
+import PasswordChange from './pages/PasswordChange';
+import ProfileImage from './pages/ProfileImage';
+import UserBoardList from './pages/UserBoardList';
+import MyBoardList from './pages/MyBoardList';
 
 
 function App() {
   
   const [user, setUser] = useState(undefined);
+  
 
   useEffect(() =>{
     
@@ -35,8 +42,6 @@ function App() {
 
   },[]);
 
- 
-
   
   return(
     <div>
@@ -46,12 +51,19 @@ function App() {
       <Routes >
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/board/:category" element={<BaseLayout user={user}><Board /></BaseLayout>} />
+        <Route path="/board/:category" element={<BaseLayout user={user}><Board user={user} /></BaseLayout>} />
         <Route path="/logout" element={<Logout setUser={setUser} />} />
         <Route path="/board/read/:bno" element={<BaseLayout user={user}> <BoardRead user = {user} /></BaseLayout>}/>
         <Route path="/register" element={<BaseLayout user={user}><Register user={user}/></BaseLayout>}></Route>
         <Route path="/modify/:bno" element={<BaseLayout user={user}> <Modify user = {user} /></BaseLayout>}/>
         <Route path="/bookmark" element= {<BaseLayout user={user}><Bookmark user ={user}></Bookmark></BaseLayout>}/>
+        <Route path="/mypage" element= {<BaseLayout user={user}><Mypage user ={user} ></Mypage></BaseLayout>}/>
+        <Route path="/mypage/nickname" element= {<BaseLayout user={user}><NicknameChange user={user}></NicknameChange></BaseLayout>}/>
+        <Route path="/mypage/password" element= {<BaseLayout user={user}><PasswordChange user={user}></PasswordChange></BaseLayout>}/>
+        <Route path="/mypage/profile-image" element= {<BaseLayout user={user}><ProfileImage user={user}></ProfileImage></BaseLayout>}/>
+        <Route path="/board/list/:uuid" element= {<BaseLayout user={user}><UserBoardList/></BaseLayout>}/>
+        <Route path="/mypage/myboards" element={<BaseLayout user={user}><MyBoardList user={user}></MyBoardList></BaseLayout>}></Route>
+
         <Route path="/" element={<BaseLayout user={user}><MainPage/></BaseLayout>} />
 
       </Routes>

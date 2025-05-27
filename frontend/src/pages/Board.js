@@ -1,11 +1,13 @@
 import React, {useEffect,useState} from 'react';
 import axios from 'axios';
-import {Form, Button, Accordion, Container, Row, Col, Pagination} from 'react-bootstrap';
+import {Form, Button, Accordion, Container, Row, Col, Pagination, Dropdown} from 'react-bootstrap';
 
 import '../styles/board.css';
 import {useNavigate, useSearchParams,useParams, useLocation} from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css'; // 이거 꼭 import 해야 함
 import { FaArrowLeft } from "react-icons/fa";
+import defaultIMG from '../img/default_profile.png'
+import WriterPopoverProfile from '../components/WriterPopoverProfile';
 
 
 const formatDate = (dateString) => {
@@ -20,15 +22,17 @@ const formatDate = (dateString) => {
     }).format(date).replace(/\./g, '-').replace(/\s/g, '');
   };
 
-function Board(){
+
+function Board({user}){
   
     const {category} = useParams();
 
     const [searchParams,setSearchParams] = useSearchParams();
     const typeFromURL = searchParams.get("type")|| "t";
     const keywordFromURL = searchParams.get("keyword") || "";
-    const currentPage = parseInt(searchParams.get("page")) || 1; // 기
-    // 본값 1
+    const currentPage = parseInt(searchParams.get("page")) || 1; 
+
+    const baseImageUrl = "http://localhost:8080/uploads/profiles/";
 
     const location = useLocation(); 
 
@@ -40,8 +44,11 @@ function Board(){
     const [prev, setPrev] = useState(false);
     const [next, setNext] = useState(true);
     
+
+    const [openMenuBno, setOpenMenuBno] = useState(null);
+
     
-    
+  
 
     useEffect(() =>{
         
@@ -67,7 +74,7 @@ function Board(){
             setNext(response.data.next);
             setPrev(response.data.prev);
             
-            
+    
 
         })
         .catch(error =>{
@@ -196,7 +203,20 @@ function Board(){
 
                                                 {/* 세 번째 컬럼: 작성자 */}
                                                 <Col xs={2} className="text-center">
-                                                    {board.writer}
+
+                                                        <div className="d-flex align-items-center ">
+                                                    
+                            
+                                                            <WriterPopoverProfile
+                                                                    key={board.bno}
+                                                                    board={board}
+                                                                    user={user}
+                                                                    baseImageUrl={baseImageUrl}
+                                                                    defaultIMG={defaultIMG}
+                                                                    isMenuOpen={openMenuBno === board.bno}
+                                                                    onOpenMenu={() => setOpenMenuBno(board.bno)}
+                                                                    onCloseMenu={() => setOpenMenuBno(null)}/>
+                                                        </div>
                                                 </Col>
 
                                                 {/* 네 번째 컬럼: 날짜 */}
