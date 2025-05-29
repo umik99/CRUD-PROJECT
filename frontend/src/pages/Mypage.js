@@ -32,7 +32,10 @@ export default function Mypage({ user }) {
 
     try {
       await axios.delete("/api/mypage/delete-user", { withCredentials: true });
+      localStorage.setItem("logout-event", Date.now()); 
+
       alert("회원 탈퇴가 완료되었습니다.");
+      
     window.location.replace("/");
     } catch (err) {
       alert("회원 탈퇴 실패: " + (err.response?.data || err.message));

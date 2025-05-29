@@ -20,6 +20,7 @@ import PasswordChange from './pages/PasswordChange';
 import ProfileImage from './pages/ProfileImage';
 import UserBoardList from './pages/UserBoardList';
 import MyBoardList from './pages/MyBoardList';
+import DMWindow from './DM/DMWindow';
 
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
         <Route path="/board/list/:uuid" element= {<BaseLayout user={user}><UserBoardList/></BaseLayout>}/>
         <Route path="/mypage/myboards" element={<BaseLayout user={user}><MyBoardList user={user}></MyBoardList></BaseLayout>}></Route>
 
+        <Route path="/dm" element={<DMWindow user={user}></DMWindow>}></Route>
         <Route path="/" element={<BaseLayout user={user}><MainPage/></BaseLayout>} />
 
       </Routes>

@@ -69,6 +69,7 @@ function BoardRead({user}){
 
             
                 
+                
             } else{
                 navigate("/board");
 
@@ -143,6 +144,7 @@ function BoardRead({user}){
             setStart(response.data.start);
             setNext(response.data.next);
             setPrev(response.data.prev);
+            console.log(response.data)
             
         })
         .catch(error => {
@@ -343,7 +345,7 @@ function BoardRead({user}){
                     <div className="card-text custom-card">{board.content}</div>
                 </div>
                 
-                {user && user.userId === board.user.userId && (
+                {user && user.uuid === board.user.uuid && (
                     <div className="d-flex justify-content-end mb-4 me-4">
                         <Button type="submit" className="back-button" onClick={() =>handleModify(bno)}>수정하기</Button>
                         <Button type="button" className="back-button" onClick={() =>handleDelete(bno)}>게시글 삭제</Button>
@@ -422,7 +424,7 @@ function BoardRead({user}){
                             <Row>
                             <Col>
                                 <div style={{ whiteSpace: 'pre-wrap' }}>{comment.content}
-                                {user && user.userId=== comment.writerId && (
+                                {user && user.uuid === comment.writerUuid && (
                             <div className="d-flex justify-content-end">
                                 <Button type="button" className="btn-sm btn-danger" onClick={() =>handleCommentDelete(comment.id)}>Delete</Button>
                             </div>

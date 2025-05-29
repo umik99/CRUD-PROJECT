@@ -101,7 +101,7 @@ useEffect(() => {
 
         {message && <div className="text-muted mb-2">{message}</div>}
 
-        <Button type="submit" className="menu-button">닉네임 변경</Button>
+        <Button type="submit" className="menu-button">비밀번호 변경</Button>
       </Form>
     </Container>
   );

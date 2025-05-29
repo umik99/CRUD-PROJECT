@@ -82,7 +82,7 @@ function BaseLayout({ children, user }) {
             <Button
           variant="outline-secondary"
           className="icon-btn"
-          onClick={() => navigate('/chat')}
+          onClick={() => window.open("/dm", "_blank", "width=720,height=650")}
           title="채팅"
         >
           <FaRegCommentDots style={{ fontSize: '1.1rem', verticalAlign: 'middle' }} />

@@ -25,6 +25,7 @@ public class UserDTO {
     private Role role;
     private OauthProvider oauthProvider;
 
+    private Long userid;
     private String uuid;
 
     private boolean deleted;

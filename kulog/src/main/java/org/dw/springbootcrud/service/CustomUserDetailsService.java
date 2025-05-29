@@ -1,4 +1,5 @@
 package org.dw.springbootcrud.service;
+import lombok.RequiredArgsConstructor;
 import org.dw.springbootcrud.domain.User;
 import org.dw.springbootcrud.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

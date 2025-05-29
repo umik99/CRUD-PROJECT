@@ -26,7 +26,7 @@ function Login({setUser}){
 
       
       setUser(response.data);
-        window.location.href="/"
+        window.location.replace("/");
 
 
 

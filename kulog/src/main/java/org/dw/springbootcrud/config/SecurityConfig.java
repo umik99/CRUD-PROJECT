@@ -49,6 +49,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/bookmark/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/api/message/**").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/api/mypage/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated())

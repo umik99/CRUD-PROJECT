@@ -169,4 +169,14 @@ public class LogInController {
         response.sendRedirect("http://localhost:3000/");
 
     }
+    @GetMapping("/check")
+    public ResponseEntity<?> checkAuth(HttpSession session) {
+        Object user = session.getAttribute("user");
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 }

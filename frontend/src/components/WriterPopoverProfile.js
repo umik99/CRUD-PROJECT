@@ -81,6 +81,8 @@ export default function WriterPopoverProfile({
   <button
     className="custom-menu-item"
     disabled={user.uuid === board.user.uuid}
+    onClick={() => window.open(`/dm?receiverId=${board.user.userid}`, "_blank", "width=720,height=650" )}
+
     // ...style, onClick 등
   >
     1:1 채팅

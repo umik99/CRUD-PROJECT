@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService {
                 .profileImage(user.getProfileImage())
                 .uuid(user.getUuid())
                 .password(user.getPassword())
+                .userid(user.getUserid())
                 .role(user.getRole())
                 .oauthProvider(user.getOauthProvider())
                 .build();
