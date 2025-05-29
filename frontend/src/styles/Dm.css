@@ -1,0 +1,12 @@
+.dm-badge {
+  display: inline-block;
+  background: #e21b1b;
+  color: #fff;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.9em;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+  margin-left: 6px;
+}
