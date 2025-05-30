@@ -73,12 +73,9 @@ public class BoardController {
     }
 
     @Operation(summary="Board create" , description="Board create")
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = "multipart/form-data")
     public ResponseEntity<?> registerBoard(
-            @RequestPart("category") String category,
-            @RequestPart("title") String title,
-            @RequestPart("content") String content,
-            @RequestPart("user") UserDTO user,
+            @RequestPart BoardDTO boardDTO,
             @RequestPart(value = "files", required = false) MultipartFile[] files,
             HttpSession session
 
@@ -86,13 +83,6 @@ public class BoardController {
 
 
         try {
-
-
-            BoardDTO boardDTO = new BoardDTO();
-            boardDTO.setCategory(category);
-            boardDTO.setTitle(title);
-            boardDTO.setContent(content);
-            boardDTO.setUser(user);
 
 
             boardService.register(boardDTO, files,session);

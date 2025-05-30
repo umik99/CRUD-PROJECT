@@ -182,6 +182,10 @@ public class BoardServiceImpl implements BoardService {
 
         board.setContent(boardDTO.getContent());
         board.setTitle(boardDTO.getTitle());
+        if (board.getLatitude() != boardDTO.getLatitude() || board.getLongitude() != boardDTO.getLongitude()) {
+            board.setLatitude(boardDTO.getLatitude());
+            board.setLongitude(boardDTO.getLongitude());
+        }
 
         Board modified = boardRepository.save(board);
         return modelMapper.map(modified, BoardDTO.class);

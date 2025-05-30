@@ -49,4 +49,10 @@ public class Board extends BaseTimeEntity{
     @OneToMany(mappedBy = "board" , cascade = CascadeType.REMOVE ,orphanRemoval = true)
     @ToString.Exclude
     private List<Bookmark> bookmarked = new ArrayList<>();
+
+    @Column
+    private Double latitude;
+
+    @Column
+    private Double longitude;
 }

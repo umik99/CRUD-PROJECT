@@ -1,9 +1,28 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {Container, Form, Button} from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { FaTrashAlt } from 'react-icons/fa'; // 휴지통 아이콘
+import {GoogleMap, Marker, useJsApiLoader, Autocomplete} from "@react-google-maps/api";
+
+const LIBRARIES = ["places"];
+
+
+const japanCenter = { lat: 35.6895, lng: 139.6917 }; // 도쿄
+
+const mapContainerStyle={
+  width:"100%",
+  height:"300px",
+};
+
+const JAPAN_BOUNDS = {
+  north: 45.551483,
+  south: 24.396308,
+  west: 122.93457,
+  east: 153.986672,
+};
+
 
 
 function Modify({user}){
@@ -17,6 +36,11 @@ function Modify({user}){
     const authorizedToEdit = location.state?.authorizedToEdit;
     
 
+    const autocompleteRef = useRef(null);
+
+    const [showMap, setShowMap] = useState(false);
+
+
 
     useEffect(() => {
   if (!board || !authorizedToEdit) {
@@ -26,6 +50,46 @@ function Modify({user}){
 }, [board, authorizedToEdit, navigate]);
 
 
+ 
+
+
+
+    const {isLoaded} = useJsApiLoader({
+      googleMapsApiKey :"GOOGLE API KEY",
+      libraries : LIBRARIES,
+
+    })
+
+
+ const handleMapClick = useCallback((event) => {
+    setPosition({
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    });
+  }, []);
+
+  const handlePlaceChanged = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace();
+      if (place.geometry && place.geometry.location) {
+        setPosition({
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        });
+      }
+    }
+  };
+  
+  const handlePlaceReset =() =>{
+    setPosition(null);
+    setShowMap(false);
+  }
+  const handleMapClose = () => setShowMap(false);
+
+  
+  
+
+
 
 
     const existingFiles = location.state?.files || [];
@@ -33,6 +97,11 @@ function Modify({user}){
 
     const [title, setTitle] = useState(board?.title||'');
     const [content, setContent] = useState(board?.content||'');
+    const [position, setPosition] = useState({
+      lat : board?.latitude || null,
+      lng : board?.longitude || null,
+
+    })
     const [isSubmitting, setIsSubmitting] = useState(false);
    
     const [allFiles , setAllFiles] = useState(() =>
@@ -68,6 +137,8 @@ function Modify({user}){
         const boardDTO = {
           title, content, user,
           removeFiles,
+          latitude:position?.lat||null,
+          longitude:position?.lng||null,
           meta: allFiles.map(file => ({
             name: file.name,
             order: file.order,  // 파일 순서
@@ -198,7 +269,71 @@ return (
           />
         </div>
 
-     
+
+    {/* 지도 위치 선택 */}
+      <div className="form-group mt-4 mb-4">
+          <button
+    type="button"
+    className="btn btn-outline-secondary mb-3"
+    onClick={() => setShowMap(true)}
+  >지도에서 위치 선택</button>
+      {position?.lat && (
+        <div className="mt-2 mb-2">
+          위치 선택됨
+          <button
+          type="button"
+          className="btn btn-sm btn-outline-danger ms-2"
+          onClick={() =>handlePlaceReset()} 
+          >선택 취소</button>
+          </div>
+      )}
+      { isLoaded && showMap &&(
+          <>
+
+        
+              {/* Place 검색창 */}
+              <Autocomplete
+                onLoad={ref => (autocompleteRef.current = ref)}
+                onPlaceChanged={handlePlaceChanged}
+                options={{
+                  componentRestrictions: { country: "jp" }, // 일본 한정
+                  types: ["establishment"], // 음식점, 가게 등
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="음식점, 장소 검색"
+                  style={{ width: "100%", height: "40px", fontSize: "16px", marginBottom: "8px" }}
+                />
+              </Autocomplete>
+              <GoogleMap
+                mapContainerStyle={mapContainerStyle}
+                center={position.lat?position : japanCenter}
+                zoom={15}
+                options={{
+                  restriction: {
+                    latLngBounds: JAPAN_BOUNDS,
+                    strictBounds: true,
+                  },
+                }}
+                onClick={handleMapClick}
+              >
+                <Marker
+                  position={position.lat?position : japanCenter}
+                  draggable={true}
+                  onDragEnd={handleMapClick}
+                />
+              </GoogleMap>
+                    <button
+            type="button"
+            className="btn btn-secondary mb-2"
+            onClick={() => handleMapClose()}
+          >
+            닫기</button>
+            </>
+        )}
+      
+      </div>
      
       <Form.Group controlId="formFileLg" className="mb-3">
         <Form.Label>사진 파일 첨부</Form.Label>
@@ -207,6 +342,7 @@ return (
         multiple
         onChange={handleAddNewFiles} />
       </Form.Group>
+
 
 
      

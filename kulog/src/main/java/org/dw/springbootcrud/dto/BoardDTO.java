@@ -48,6 +48,9 @@ public class BoardDTO {
     private UserDTO user;
 
 
+    private Double latitude;
+    private Double longitude;
+
     private int replyCount;
 
     private int viewCount;

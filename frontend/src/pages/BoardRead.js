@@ -3,12 +3,15 @@ import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import BaseLayout from '../components/layouts/BaseLayout';
 import {Pagination, Row, Col, Card, Button, Container, Carousel, Form} from 'react-bootstrap';
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+
 import bookmark from '../img/bookmark.png';
 import defaultIMG from '../img/default_profile.png';
 import WriterPopoverProfile from '../components/WriterPopoverProfile';
 import CommentWriterPopoverProfile from '../components/CommentWriterPopoverProfile';
 import '../styles/read.css';
 
+const LIBRARIES = ["places"];
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -50,7 +53,15 @@ function BoardRead({user}){
     const [prev, setPrev] = useState(false);
     const [next, setNext] = useState(true);
     const [files, setFiles]  =useState([]);
+    const [position, setPosition] = useState({
+        lat : null,
+        lng : null,
+    })
+    const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyB_GiwL4TIWU6mt6A1k1RhzNIr6ZAx9BLQ",
 
+    libraries:LIBRARIES,
+  });
     const [bookmarked, setBookmarked]= useState(false);
     
     const baseImageUrl = "http://localhost:8080/uploads/profiles/";
@@ -66,10 +77,9 @@ function BoardRead({user}){
                 setLoading(false);
                 setBookmarked(response.data.bookmarked);
                 setFiles(response.data.files)
+                setPosition({lat : response.data.latitude, lng : response.data.longitude})
 
-            
-                
-                
+
             } else{
                 navigate("/board");
 
@@ -144,7 +154,6 @@ function BoardRead({user}){
             setStart(response.data.start);
             setNext(response.data.next);
             setPrev(response.data.prev);
-            console.log(response.data)
             
         })
         .catch(error => {
@@ -351,6 +360,26 @@ function BoardRead({user}){
                         <Button type="button" className="back-button" onClick={() =>handleDelete(bno)}>게시글 삭제</Button>
                     </div>
                     )}
+
+
+                {isLoaded && board.latitude && board.longitude && (
+                <div class = "mt-5 mb-5" style={{ width: "75%", height: "300px", margin: "0 auto"}}>
+                    <GoogleMap
+                    mapContainerStyle={{ width: "100%", height: "100%" }}
+                    center={position}
+                    zoom={15}
+                    >
+                    <Marker position={position} />
+                    </GoogleMap>
+                </div>
+              
+                )}
+                {!isLoaded && board.latitude && board.longitude && (
+  <div className="mt-5 mb-5 text-center" style={{ width: "75%", height: "300px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    지도를 불러오는 중...
+  </div>
+)}
+ 
 
 
                 <div className="d-flex justify-content-center me-4 mb-3">

@@ -1,12 +1,31 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState ,useRef} from "react";
 import { useNavigate , useLocation } from "react-router-dom";
 import {Container, Form, Button} from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { FaTrashAlt } from 'react-icons/fa'; // 휴지통 아이콘
+import {GoogleMap, Marker, useJsApiLoader, Autocomplete} from "@react-google-maps/api";
+
 import '../styles/read.css';
 
+const japanCenter = { lat: 35.6895, lng: 139.6917 }; // 도쿄
+const LIBRARIES = ["places"];
+
+const mapContainerStyle={
+  width:"100%",
+  height:"300px",
+};
+
+const JAPAN_BOUNDS = {
+  north: 45.551483,
+  south: 24.396308,
+  west: 122.93457,
+  east: 153.986672,
+};
+
+
 function Register({user}) {
+
 
 
     const navigate = useNavigate();
@@ -21,10 +40,46 @@ function Register({user}) {
     const [selectedFiles,  setSelectedFiles] = useState([]);
     const [previews, setPreviews] = useState([]);
 
-    
+    const autocompleteRef = useRef(null);
+
+    const [position, setPosition] = useState(null);
+    const [showMap, setShowMap] = useState(false);
+
+
+
+
+    const {isLoaded} = useJsApiLoader({
+      googleMapsApiKey :"GOOGLE API KEY",
+      libraries : LIBRARIES,
+
+    })
+
+    const handleMapClick = useCallback((event) => {
+    setPosition({
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    });
+  }, []);
+
+  const handlePlaceChanged = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace();
+      if (place.geometry && place.geometry.location) {
+        setPosition({
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        });
+      }
+    }
+  };
+  
+  const handlePlaceReset =() =>{
+    setPosition(null);
+    setShowMap(false);
+  }
+  const handleMapClose = () => setShowMap(false);
 
   
-    console.log(selectedFiles);
     useEffect(() =>{
         if (!user){
             
@@ -42,28 +97,29 @@ function Register({user}) {
 
     try{
 
-        const formData = new FormData();
-        formData.append("category",category);
-        formData.append("title",title);
-        formData.append("content",content);
-        formData.append("user",new Blob([JSON.stringify(user)], { type: "application/json" }));;
+      const boardDTO = {
         
-        selectedFiles.forEach(file =>{
-          formData.append("files",file);
-        })
+          category:category,
+          title, content, user,
+          latitude:position?.lat||null,
+          longitude:position?.lng || null,
+          
+        };
 
+        const formData = new FormData();
 
-        const fileOrderInfo = selectedFiles.map((file, index) => ({
-          name: file.name, 
-          order: index
-        }));
-        formData.append("meta", new Blob([JSON.stringify(fileOrderInfo)], { type: "application/json" }));
+  
+        const jsonBlob = new Blob(
+          [JSON.stringify(boardDTO)],
+          { type: "application/json" }
+      );
+      formData.append("boardDTO", jsonBlob);
 
-
-        const response = await axios.post("/api/board/register",formData, {
-           
-            withCredentials:true,
+        const response = await axios.post(`/api/board/register`, formData, {
+       
+            withCredentials:true
         });
+
 
         alert("등록 성공!")
         navigate(`/board/${category}`);
@@ -120,7 +176,6 @@ function Register({user}) {
   const handleOnDragEnd = (result) => {
     const { source, destination } = result;
   
-    // 목적지(destination)가 없으면 종료
     if (!destination) return;
   
     // 드래그가 휴지통 영역으로 끝났을 때 삭제 처리
@@ -174,8 +229,73 @@ function Register({user}) {
           />
         </div>
 
+      {/* 지도 위치 선택 */}
+      <div className="form-group mt-4 mb-4">
+          <button
+    type="button"
+    className="btn btn-outline-secondary mb-3"
+    onClick={() => setShowMap(true)}
+  >지도에서 위치 선택</button>
+      {position && (
+        <div className="mt-2 mb-2">
+          위치 선택됨
+          <button
+          type="button"
+          className="btn btn-sm btn-outline-danger ms-2"
+          onClick={() =>handlePlaceReset()} 
+          >선택 취소</button>
+          </div>
+      )}
+      { isLoaded && showMap &&(
+          <>
+
+        
+              {/* Place 검색창 */}
+              <Autocomplete
+                onLoad={ref => (autocompleteRef.current = ref)}
+                onPlaceChanged={handlePlaceChanged}
+                options={{
+                  componentRestrictions: { country: "jp" }, // 일본 한정
+                  types: ["establishment"], // 음식점, 가게 등
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="음식점, 장소 검색"
+                  style={{ width: "100%", height: "40px", fontSize: "16px", marginBottom: "8px" }}
+                />
+              </Autocomplete>
+              <GoogleMap
+                mapContainerStyle={mapContainerStyle}
+                center={position?position : japanCenter}
+                zoom={15}
+                options={{
+                  restriction: {
+                    latLngBounds: JAPAN_BOUNDS,
+                    strictBounds: true,
+                  },
+                }}
+                onClick={handleMapClick}
+              >
+                <Marker
+                  position={position?position : japanCenter}
+                  draggable={true}
+                  onDragEnd={handleMapClick}
+                />
+              </GoogleMap>
+                    <button
+            type="button"
+            className="btn btn-secondary mb-2"
+            onClick={() => handleMapClose()}
+          >
+            닫기</button>
+            </>
+        )}
+      
+      </div>
      
-     
+
+
       <Form.Group controlId="formFileMultiple" className="mb-3">
         <Form.Label>사진 파일 첨부</Form.Label>
         <Form.Control type="file" multiple
