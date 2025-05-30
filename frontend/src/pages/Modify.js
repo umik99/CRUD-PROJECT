@@ -5,8 +5,7 @@ import {Container, Form, Button} from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { FaTrashAlt } from 'react-icons/fa'; // 휴지통 아이콘
 import {GoogleMap, Marker, useJsApiLoader, Autocomplete} from "@react-google-maps/api";
-
-const LIBRARIES = ["places"];
+import { APIKEY, LIBRARIES} from "../config/APIConfig.js";
 
 
 const japanCenter = { lat: 35.6895, lng: 139.6917 }; // 도쿄
@@ -54,12 +53,6 @@ function Modify({user}){
 
 
 
-    const {isLoaded} = useJsApiLoader({
-      googleMapsApiKey :"GOOGLE API KEY",
-      libraries : LIBRARIES,
-
-    })
-
 
  const handleMapClick = useCallback((event) => {
     setPosition({
@@ -86,7 +79,12 @@ function Modify({user}){
   }
   const handleMapClose = () => setShowMap(false);
 
-  
+    const {isLoaded} = useJsApiLoader({
+      googleMapsApiKey :APIKEY,
+      libraries : LIBRARIES,
+
+  })
+
   
 
 

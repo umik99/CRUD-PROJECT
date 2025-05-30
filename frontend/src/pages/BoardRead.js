@@ -4,6 +4,7 @@ import axios from 'axios';
 import BaseLayout from '../components/layouts/BaseLayout';
 import {Pagination, Row, Col, Card, Button, Container, Carousel, Form} from 'react-bootstrap';
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import {LIBRARIES, APIKEY} from "../config/APIConfig.js";
 
 import bookmark from '../img/bookmark.png';
 import defaultIMG from '../img/default_profile.png';
@@ -11,7 +12,7 @@ import WriterPopoverProfile from '../components/WriterPopoverProfile';
 import CommentWriterPopoverProfile from '../components/CommentWriterPopoverProfile';
 import '../styles/read.css';
 
-const LIBRARIES = ["places"];
+
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -57,11 +58,12 @@ function BoardRead({user}){
         lat : null,
         lng : null,
     })
-    const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyB_GiwL4TIWU6mt6A1k1RhzNIr6ZAx9BLQ",
-
-    libraries:LIBRARIES,
-  });
+    const {isLoaded} = useJsApiLoader({
+         googleMapsApiKey :APIKEY,
+         libraries : LIBRARIES,
+   
+       });
+   
     const [bookmarked, setBookmarked]= useState(false);
     
     const baseImageUrl = "http://localhost:8080/uploads/profiles/";
