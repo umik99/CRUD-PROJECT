@@ -5,11 +5,11 @@ import { useNavigate, Link } from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../styles/mypage.css';
 import defaultIMG from '../img/default_profile.png';
+import { baseProfileImageUrl } from '../config/APIConfig';
 
 export default function Mypage({ user }) {
 
   const navigate = useNavigate();
-  const baseImageUrl = "http://localhost:8080/uploads/profiles/";
 
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function Mypage({ user }) {
     <Container className="mypage-container">
       <h3 className="mypage-title">마이페이지</h3>
       <img
-        src={user?.profileImage ? baseImageUrl + user.profileImage : defaultIMG}
+        src={user?.profileImage ? baseProfileImageUrl + user.profileImage : defaultIMG}
         alt="프로필"
         className="profile-image"
       />

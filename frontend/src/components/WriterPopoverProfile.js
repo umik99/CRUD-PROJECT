@@ -4,7 +4,7 @@ import '../styles/WriterPopoverProfile.css'
 
 export default function WriterPopoverProfile({
   board,
-  baseImageUrl,
+  baseProfileImageUrl,
   defaultIMG,
   isMenuOpen,
   onOpenMenu,
@@ -38,7 +38,7 @@ export default function WriterPopoverProfile({
   return (
     <div className="d-flex align-items-center position-relative" ref={menuRef}>
       <img
-        src={board.writerProfileImg ? baseImageUrl + board.writerProfileImg : defaultIMG}
+        src={board.writerProfileImg ? baseProfileImageUrl + board.writerProfileImg : defaultIMG}
         alt="프로필"
         className="rounded-circle mx-2"
         style={{

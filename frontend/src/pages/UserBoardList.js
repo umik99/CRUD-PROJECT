@@ -7,6 +7,7 @@ import {useNavigate, useSearchParams,useParams, useLocation} from "react-router-
 import 'bootstrap-icons/font/bootstrap-icons.css'; // 이거 꼭 import 해야 함
 import { FaArrowLeft } from "react-icons/fa";
 import defaultIMG from '../img/default_profile.png';
+import { baseProfileImageUrl } from '../config/APIConfig';
 
 
 
@@ -70,7 +71,6 @@ function UserBoardList(){
         }
     
          
-    const baseImageUrl = "http://localhost:8080/uploads/profiles/";
 
     useEffect (() =>{
         
@@ -141,7 +141,7 @@ function UserBoardList(){
                      <div className="d-flex align-items-center ">
 
                                 <img
-                                    src={board.writerProfileImg? baseImageUrl + board.writerProfileImg : defaultIMG}
+                                    src={board.writerProfileImg? baseProfileImageUrl + board.writerProfileImg : defaultIMG}
                                     alt="프로필"
                                     className="rounded-circle mb-2 mx-2"
                                     style={{

@@ -3,7 +3,7 @@ import '../styles/WriterPopoverProfile.css'
 
 export default function CommentWriterPopoverProfile ({
   comment,
-  baseImageUrl,
+  baseProfileImageUrl,
   defaultIMG,
   isMenuOpen,
   onOpenMenu,
@@ -46,7 +46,7 @@ export default function CommentWriterPopoverProfile ({
   return (
     <div className="d-flex align-items-center position-relative" ref={menuRef}>
       <img
-        src={comment.commentWriterProfileImg ? baseImageUrl + comment.commentWriterProfileImg : defaultIMG}
+        src={comment.commentWriterProfileImg ? baseProfileImageUrl + comment.commentWriterProfileImg : defaultIMG}
         alt="프로필"
         className="rounded-circle mx-2"
         style={{

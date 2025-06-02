@@ -5,15 +5,15 @@ import { useEffect, useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import '../styles/mypage.css'; 
 import { redirect, useNavigate } from 'react-router-dom';
-
+import { baseProfileImageUrl } from '../config/APIConfig';
 import defaultImage from '../img/default_profile.png';
+
 
 const ProfileImage = ({ user, onSubmit }) => {
 
   const navigate = useNavigate();
 
  
-const baseImageUrl = "http://localhost:8080/uploads/profiles/";
 
   
   const [newFile, setNewFile] = useState(null);
@@ -63,7 +63,7 @@ const handleGoBack = () => {
       : newFile
         ? URL.createObjectURL(newFile)
         : user?.profileImage
-          ? baseImageUrl + user.profileImage
+          ? baseProfileImageUrl + user.profileImage
           : defaultImage
         }
         alt="프로필 이미지"

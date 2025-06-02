@@ -6,7 +6,10 @@ import '../styles/board.css';
 import {useNavigate, useSearchParams,useParams, useLocation} from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css'; // 이거 꼭 import 해야 함
 import { FaArrowLeft } from "react-icons/fa";
+import { baseProfileImageUrl } from '../config/APIConfig';
+import { baseThumbnailImageUrl } from '../config/APIConfig';
 import defaultIMG from '../img/default_profile.png'
+
 import WriterPopoverProfile from '../components/WriterPopoverProfile';
 
 
@@ -32,7 +35,6 @@ function Board({user}){
     const keywordFromURL = searchParams.get("keyword") || "";
     const currentPage = parseInt(searchParams.get("page")) || 1; 
 
-    const baseImageUrl = "http://localhost:8080/uploads/profiles/";
 
     const location = useLocation(); 
 
@@ -212,7 +214,7 @@ function Board({user}){
                                                                     key={board.bno}
                                                                     board={board}
                                                                     user={user}
-                                                                    baseImageUrl={baseImageUrl}
+                                                                    baseProfileImageUrl={baseProfileImageUrl}
                                                                     defaultIMG={defaultIMG}
                                                                     isMenuOpen={openMenuBno === board.bno}
                                                                     onOpenMenu={() => setOpenMenuBno(board.bno)}
@@ -248,7 +250,7 @@ function Board({user}){
                                 }}
                             >
                                 <img
-                                    src={`http://localhost:8080/uploads/thumbnails/${file.savedName}`}
+                                    src={`${baseThumbnailImageUrl}${file.savedName}`}
                                     alt={file.savedName}
                                     style={{
                                         width: '100%',

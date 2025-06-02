@@ -8,6 +8,7 @@ import  fukuokaImg from '../img/후쿠오카.jpeg';
 import  hokkaidoImg from '../img/홋카이도.jpeg';
 import others from '../img/기타.jpeg';
 import defaultIMG from '../img/default_profile.png';
+import { baseProfileImageUrl } from "../config/APIConfig";
 
 export default function MainPage() {
   const isLoggedIn = false;
@@ -21,7 +22,6 @@ export default function MainPage() {
     { title: "홋카이도", image: hokkaidoImg, link: "/board/hokkaido" },
     // ...
   ];    
-  const baseImageUrl = "http://localhost:8080/uploads/profiles/";
 
 
  
@@ -116,7 +116,7 @@ const isNew = (regDate) => {
           <div className="d-flex align-items-center ">
 
                             <img
-                                src={board.writerProfileImg? baseImageUrl + board.writerProfileImg : defaultIMG}
+                                src={board.writerProfileImg? baseProfileImageUrl + board.writerProfileImg : defaultIMG}
                                 alt="프로필"
                                 className="rounded-circle mb-2 mx-2"
                                 style={{
@@ -162,7 +162,7 @@ const isNew = (regDate) => {
                    <div className="d-flex align-items-center ">
 
                                 <img
-                                    src={board.writerProfileImg? baseImageUrl + board.writerProfileImg : defaultIMG}
+                                    src={board.writerProfileImg? baseProfileImageUrl + board.writerProfileImg : defaultIMG}
                                     alt="프로필"
                                     className="rounded-circle mb-2 mx-2"
                                     style={{

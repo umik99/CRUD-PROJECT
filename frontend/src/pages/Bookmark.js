@@ -6,6 +6,7 @@ import '../styles/board.css';
 import {useNavigate, useSearchParams,useParams, useLocation} from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css'; // 이거 꼭 import 해야 함
 import { FaArrowLeft } from "react-icons/fa";
+import { baseProfileImageUrl } from '../config/APIConfig';
 import defaultIMG from '../img/default_profile.png';
 
 
@@ -79,8 +80,7 @@ function Bookmark({user}){
             
         }
     
-         
-    const baseImageUrl = "http://localhost:8080/uploads/profiles/";
+
 
     useEffect (() =>{
         
@@ -229,7 +229,7 @@ function Bookmark({user}){
                      <div className="d-flex align-items-center ">
 
                                 <img
-                                    src={board.writerProfileImg? baseImageUrl + board.writerProfileImg : defaultIMG}
+                                    src={board.writerProfileImg? baseProfileImageUrl + board.writerProfileImg : defaultIMG}
                                     alt="프로필"
                                     className="rounded-circle mb-2 mx-2"
                                     style={{

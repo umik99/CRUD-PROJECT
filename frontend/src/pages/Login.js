@@ -5,6 +5,7 @@ import Base from '../components/layouts/BaseLayout';
 import BaseLayout from '../components/layouts/BaseLayout';
 import '../styles/login.css';
 import {useNavigate} from "react-router-dom";
+import { backendURL } from '../config/APIConfig';
 
 function Login({setUser}){
   const [form, setForm] = useState({username:"",password:""});
@@ -100,7 +101,7 @@ function Login({setUser}){
             
           </div>
               <div className='d-grid text-align-center justify-content-center mt-4'>
-                    <a href="http://localhost:8080/oauth2/authorization/google" style={{ textDecoration: 'none' }}>
+                    <a href={`${backendURL}/oauth2/authorization/google`} style={{ textDecoration: 'none' }}>
                       <button
                         type="button"
                         className="btn btn-light border d-flex align-items-center gap-2"
@@ -121,7 +122,7 @@ function Login({setUser}){
                 </div>
 
                 <div className='d-grid justify-content-center mt-3'>
-                    <a href="http://localhost:8080/oauth2/authorization/kakao" style={{ textDecoration: 'none' }}>
+                    <a href={`${backendURL}/oauth2/authorization/kakao`} style={{ textDecoration: 'none' }}>
                       <button
                         type="button"
                         className="btn btn-warning border d-flex align-items-center gap-2"

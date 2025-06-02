@@ -1,2 +1,2 @@
 kulog/src/main/resources/application.properties
-frontend/src/config/APIConfig.js
+frontend/.env

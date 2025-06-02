@@ -1,9 +1,10 @@
 
 import defaultIMG from '../img/default_profile.png'
+import { baseProfileImageUrl } from '../config/APIConfig';
 
 
 export default function DMContactList({ contacts, selectedContact, onSelect }) {
-    const baseImageUrl = "http://localhost:8080/uploads/profiles/";
+    
 
   return (
     <div style={{ width: "220px", borderRight: "1px solid #ddd", overflowY: "auto" }}>
@@ -19,7 +20,7 @@ export default function DMContactList({ contacts, selectedContact, onSelect }) {
           className='border'
         >
           <img
-        src={contact.profileImage ? baseImageUrl + contact.profileImage : defaultIMG}
+        src={contact.profileImage ? baseProfileImageUrl + contact.profileImage : defaultIMG}
         alt="프로필"
         className="rounded-circle mx-2"
         style={{

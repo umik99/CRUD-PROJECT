@@ -9,6 +9,9 @@ import {LIBRARIES, APIKEY} from "../config/APIConfig.js";
 import bookmark from '../img/bookmark.png';
 import defaultIMG from '../img/default_profile.png';
 import WriterPopoverProfile from '../components/WriterPopoverProfile';
+import { baseProfileImageUrl } from '../config/APIConfig.js';
+import { baseOriginalImageUrl } from '../config/APIConfig.js';
+import { baseThumbnailImageUrl } from '../config/APIConfig.js';
 import CommentWriterPopoverProfile from '../components/CommentWriterPopoverProfile';
 import '../styles/read.css';
 
@@ -66,7 +69,6 @@ function BoardRead({user}){
    
     const [bookmarked, setBookmarked]= useState(false);
     
-    const baseImageUrl = "http://localhost:8080/uploads/profiles/";
 
     useEffect(()=>{
         axios.get(`/api/board/read/${bno}`
@@ -303,7 +305,7 @@ function BoardRead({user}){
                             <WriterPopoverProfile
                                     key={board.bno}
                                     board={board}
-                                    baseImageUrl={baseImageUrl}
+                                    baseProfileImageUrl={baseProfileImageUrl}
                                     defaultIMG={defaultIMG}
                                     user={user}
                                     isMenuOpen={openMenuBno === board.bno}
@@ -326,7 +328,7 @@ function BoardRead({user}){
                                 <img
                                     className=" carousel-image" 
                              
-                                    src={`http://localhost:8080/uploads/originals/${file.savedName}`}
+                                    src={`${baseOriginalImageUrl}${file.savedName}`}
                                     alt={file.savedName}
                                 />
                             </Carousel.Item>
@@ -341,7 +343,7 @@ function BoardRead({user}){
                                     objectFit: 'cover',
                                     margin: '0 auto'
                                 }}
-                                src="http://localhost:8080/uploads/originals/default.jpg" // 기본 이미지 경로
+                                src={`${baseOriginalImageUrl}default.jpg`} // 기본 이미지 경로
                                 alt="기본 이미지"
                             />
                         </Carousel.Item>
@@ -436,7 +438,7 @@ function BoardRead({user}){
                                     user={user}
                                     key={comment.id}
                                     comment ={comment}
-                                    baseImageUrl={baseImageUrl}
+                                    baseProfileImageUrl={baseProfileImageUrl}
                                     defaultIMG={defaultIMG}
                                     isMenuOpen={openMenuCommentId === comment.id}
                                     onOpenMenu={() => setOpenMenuCommentId(comment.id)}
@@ -477,7 +479,7 @@ function BoardRead({user}){
                         {user && (
                         <div className="d-flex align-items-center ms-2">
                             <img
-                            src={user.profileImage ? baseImageUrl + user.profileImage : defaultIMG}
+                            src={user.profileImage ? baseProfileImageUrl + user.profileImage : defaultIMG}
                             alt="프로필"
                             className="rounded-circle mb-2"
                             style={{
