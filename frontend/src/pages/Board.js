@@ -76,7 +76,6 @@ function Board({user}){
             setNext(response.data.next);
             setPrev(response.data.prev);
             
-            console.log(response.data)
     
 
         })

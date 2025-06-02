@@ -306,7 +306,7 @@ return (
               </Autocomplete>
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
-                center={position.lat?position : japanCenter}
+                center={position && position.lat != null ? position : japanCenter}
                 zoom={15}
                 options={{
                   restriction: {
@@ -317,7 +317,7 @@ return (
                 onClick={handleMapClick}
               >
                 <Marker
-                  position={position.lat?position : japanCenter}
+                  position={position && position.lat != null ? position : japanCenter}
                   draggable={true}
                   onDragEnd={handleMapClick}
                 />
