@@ -5,8 +5,8 @@
 
 
 
-<img width="1702" alt="dns 서버 배포 완료" src="https://github.com/user-attachments/assets/3ea5ee62-f9c9-43c6-a9d0-1df1dfa9830f" />
-<img width="1694" alt="DNS 서버 배포 - 메인페이지" src="https://github.com/user-attachments/assets/9352bce6-327f-4ebe-8ea0-15d2f462c556" />
+<img width="1200" alt="dns 서버 배포 완료" src="https://github.com/user-attachments/assets/3ea5ee62-f9c9-43c6-a9d0-1df1dfa9830f" />
+<img width="1200" alt="DNS 서버 배포 - 메인페이지" src="https://github.com/user-attachments/assets/9352bce6-327f-4ebe-8ea0-15d2f462c556" />
 
 
 
