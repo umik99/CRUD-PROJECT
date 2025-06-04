@@ -72,6 +72,7 @@ function BoardRead({user}){
 
     useEffect(()=>{
         axios.get(`${backendURL}/api/board/read/${bno}`
+                   ,{withCredentials:true}
         
         ).then(response=>{
 
