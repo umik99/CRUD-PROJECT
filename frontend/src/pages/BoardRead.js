@@ -14,7 +14,7 @@ import { baseOriginalImageUrl } from '../config/APIConfig.js';
 import { baseThumbnailImageUrl } from '../config/APIConfig.js';
 import CommentWriterPopoverProfile from '../components/CommentWriterPopoverProfile';
 import '../styles/read.css';
-
+import { backendURL } from '../config/APIConfig.js';
 
 
 const formatDate = (dateString) => {
@@ -71,7 +71,7 @@ function BoardRead({user}){
     
 
     useEffect(()=>{
-        axios.get(`/api/board/read/${bno}`
+        axios.get(`${backendURL}/api/board/read/${bno}`
         
         ).then(response=>{
 
@@ -117,7 +117,7 @@ function BoardRead({user}){
         
 
 
-        await axios.post(`/api/comment/${bno}`, commentDTO,{
+        await axios.post(`${backendURL}/api/comment/${bno}`, commentDTO,{
             withCredentials:true,
             headers :{
                 "Content-Type": "application/json"
@@ -142,7 +142,7 @@ function BoardRead({user}){
     
         if (!bno) return; // bno 없으면 요청 안 보냄
 
-        axios.get(`/api/comment/${bno}`, 
+        axios.get(`${backendURL}/api/comment/${bno}`, 
             {
                 params: {
                     page:currentPage,
@@ -169,9 +169,9 @@ function BoardRead({user}){
       
       const handleLikeClick = async () => {
           try{
-              await axios.post(`/api/board/like/${bno}`, {}, { withCredentials: true });
+              await axios.post(`${backendURL}/api/board/like/${bno}`, {}, { withCredentials: true });
   
-              const response = await axios.get(`/api/board/like/${bno}`);
+              const response = await axios.get(`${backendURL}/api/board/like/${bno}`);
               setLikeCount(response.data);
           }catch(error){
               console.error("Error fetching board: ",error);
@@ -184,7 +184,7 @@ function BoardRead({user}){
       const handleBookmarkClick = async ()=>{
         try{
 
-        await axios.post(`/api/bookmark/${bno}`, {}, {withCredentials: true});
+        await axios.post(`${backendURL}/api/bookmark/${bno}`, {}, {withCredentials: true});
         
         setBookmarked(!bookmarked);
         
@@ -230,7 +230,7 @@ function BoardRead({user}){
 
 
     useEffect(()=>{
-        axios.get(`/api/board/like/${bno}`)
+        axios.get(`${backendURL}/api/board/like/${bno}`)
         .then(response=>{
             
             setLikeCount(response.data)
@@ -246,7 +246,7 @@ function BoardRead({user}){
         if(!confirmDelete) return;
 
         try{
-            await axios.delete(`/api/board/delete/${bno}`);
+            await axios.delete(`${backendURL}/api/board/delete/${bno}`);
             alert("삭제되었습니다.");
             window.location.replace("/");
         }catch(error){
@@ -259,7 +259,7 @@ function BoardRead({user}){
          if(!confirmCommentDelete) return;
 
          try{
-            await axios.delete(`/api/comment/${id}`)
+            await axios.delete(`${backendURL}/api/comment/${id}`)
             alert("삭제되었습니다.");
             fetchComments();
             

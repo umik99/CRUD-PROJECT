@@ -7,7 +7,7 @@ import '../styles/mypage.css';
 import { redirect, useNavigate } from 'react-router-dom';
 import { baseProfileImageUrl } from '../config/APIConfig';
 import defaultImage from '../img/default_profile.png';
-
+import { backendURL } from '../config/APIConfig';
 
 const ProfileImage = ({ user, onSubmit }) => {
 
@@ -101,13 +101,13 @@ const handleGoBack = () => {
     onClick={async () => {
       try {
         if (resetToDefault) {
-          await axios.delete('/api/mypage/profile-image', { withCredentials: true });
+          await axios.delete(`${backendURL}/api/mypage/profile-image`, { withCredentials: true });
           setMessage('기본 이미지로 변경되었습니다.');
         } else if (newFile) {
           const formData = new FormData();
           formData.append('file', newFile);
 
-          await axios.patch('/api/mypage/profile-image', formData, {
+          await axios.patch(`${backendURL}/api/mypage/profile-image`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
             withCredentials: true,
         

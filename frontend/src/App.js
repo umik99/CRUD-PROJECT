@@ -21,7 +21,7 @@ import ProfileImage from './pages/ProfileImage';
 import UserBoardList from './pages/UserBoardList';
 import MyBoardList from './pages/MyBoardList';
 import DMWindow from './DM/DMWindow';
-
+import { backendURL } from './config/APIConfig';
 
 function App() {
   
@@ -30,7 +30,7 @@ function App() {
 
   useEffect(() =>{
     
-    axios.get("/api/user")
+    axios.get(`${backendURL}/api/user`, {withCredentials:true})
     .then(response => {
       
       setUser(response.data)

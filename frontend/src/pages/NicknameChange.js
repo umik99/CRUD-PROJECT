@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import '../styles/mypage.css'; 
 import { redirect, useNavigate } from 'react-router-dom';
+import { backendURL } from '../config/APIConfig';
 
 
 const NicknameChange = ({ user, onSubmit }) => {
@@ -33,7 +34,7 @@ useEffect(() => {
     
     
         const response = await axios.patch(
-            `/api/mypage/nickname`,
+            `${backendURL}/api/mypage/nickname`,
             {nickname},
             {withCredentials:true}
             

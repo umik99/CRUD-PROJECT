@@ -3,6 +3,7 @@ import DMContactList from "./DMContactList";
 import DMChatRoom from "./DMChatRoom";
 import { Container } from "react-bootstrap";
 import '../styles/Dm.css';
+import { backendURL } from "../config/APIConfig";
 
 export default function DMWindow({user}) {
   const [contacts, setContacts] = useState([]);
@@ -12,7 +13,7 @@ export default function DMWindow({user}) {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const receiverId = params.get("receiverId");
-    fetch(`/api/message/contacts${receiverId ? `?receiverId=${receiverId}` : ""}`)
+    fetch(`${backendURL}/api/message/contacts${receiverId ? `?receiverId=${receiverId}` : ""}`, {credentials: "include"})
       .then(res => {
      
       return res.json();
@@ -39,7 +40,7 @@ export default function DMWindow({user}) {
 
   useEffect(() => {
   const interval = setInterval(() => {
-    fetch("/api/check") 
+    fetch(`${backendURL}/api/check`,  {credentials:"include"}) 
       .then(res => {
         if (res.status === 401 || res.status === 403) {
           alert("로그인이 필요합니다.");

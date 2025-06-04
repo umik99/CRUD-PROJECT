@@ -6,6 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../styles/mypage.css';
 import defaultIMG from '../img/default_profile.png';
 import { baseProfileImageUrl } from '../config/APIConfig';
+import { backendURL } from '../config/APIConfig';
 
 export default function Mypage({ user }) {
 
@@ -31,7 +32,7 @@ export default function Mypage({ user }) {
     if (!window.confirm("탈퇴하시겠습니까?")) return;
 
     try {
-      await axios.delete("/api/mypage/delete-user", { withCredentials: true });
+      await axios.delete(`${backendURL}/api/mypage/delete-user`, { withCredentials: true });
       localStorage.setItem("logout-event", Date.now()); 
 
       alert("회원 탈퇴가 완료되었습니다.");

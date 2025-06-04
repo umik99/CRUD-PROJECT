@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import '../styles/mypage.css'; 
 import { redirect, useNavigate } from 'react-router-dom';
+import { backendURL } from '../config/APIConfig';
 
 
 const PasswordChange = ({ user, onSubmit }) => {
@@ -47,7 +48,7 @@ useEffect(() => {
     
     
         const response = await axios.patch(
-            `/api/mypage/password`,
+            `${backendURL}/api/mypage/password`,
             {   currentPassword: currentPassword,
                 newPassword:newPassword},
             {withCredentials:true}

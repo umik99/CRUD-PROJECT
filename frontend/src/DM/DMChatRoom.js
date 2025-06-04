@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { backendURL } from "../config/APIConfig";
 
 function formatDate(sendAt) {
   if (!sendAt) return "";
@@ -22,7 +23,7 @@ export default function DMChatRoom({ contact, selectedContactId }) {
 
   useEffect(() => {
     if (selectedContactId) {
-      axios.get(`/api/message/history/${selectedContactId}`)
+      axios.get(`${backendURL}/api/message/history/${selectedContactId}`, {withCredentials:true})
         .then(res => {
 
         return setMessages(res.data)});
@@ -36,12 +37,12 @@ export default function DMChatRoom({ contact, selectedContactId }) {
 
   const sendMessage = async () => {
     if (!input.trim() || !selectedContactId) return;
-    await axios.post("/api/message/send", {
+    await axios.post(`${backendURL}/api/message/send`, {
       receiverId: selectedContactId,
-      content: input.trim()
-    });
+      content: input.trim(),
+    },{withCredentials:true});
     setInput("");
-    const res = await axios.get(`/api/message/history/${selectedContactId}`);
+    const res = await axios.get(`${backendURL}/api/message/history/${selectedContactId}`, {withCredentials:true});
     setMessages(res.data);
   };
 

@@ -9,6 +9,7 @@ import  hokkaidoImg from '../img/홋카이도.jpeg';
 import others from '../img/기타.jpeg';
 import defaultIMG from '../img/default_profile.png';
 import { baseProfileImageUrl } from "../config/APIConfig";
+import { backendURL } from "../config/APIConfig";
 
 export default function MainPage() {
   const isLoggedIn = false;
@@ -31,7 +32,7 @@ export default function MainPage() {
     useEffect(() =>{
           
 
-      axios.get('/api/board/main/recentBoards')
+      axios.get(`${backendURL}/api/board/main/recentBoards`)
       .then(response=>{
           
           setBoardList(response.data || []);
@@ -47,7 +48,7 @@ export default function MainPage() {
   useEffect(() =>{
           
 
-    axios.get('/api/comment/main/recentCommentedBoards')
+    axios.get(`${backendURL}/api/comment/main/recentCommentedBoards`)
     .then(response=>{
         
         setCommentedBoardList(response.data || []);

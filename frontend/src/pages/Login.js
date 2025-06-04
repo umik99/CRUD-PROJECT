@@ -16,7 +16,7 @@ function Login({setUser}){
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-      const response = await axios.post("/api/login",form,{
+      const response = await axios.post(`${backendURL}/api/login`,form,{
         withCredentials:true,
         headers:{
           "Content-Type": "application/json"

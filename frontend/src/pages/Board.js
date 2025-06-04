@@ -9,6 +9,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { baseProfileImageUrl } from '../config/APIConfig';
 import { baseThumbnailImageUrl } from '../config/APIConfig';
 import defaultIMG from '../img/default_profile.png'
+import { backendURL } from '../config/APIConfig';
 
 import WriterPopoverProfile from '../components/WriterPopoverProfile';
 
@@ -56,7 +57,7 @@ function Board({user}){
         
         setKeyword(keywordFromURL)
 
-        axios.get(`/api/board/${category}/list`, {
+        axios.get(`${backendURL}/api/board/${category}/list`, {
             params:{/*
                 type:searchParams.type,
                 keyword:searchParams.keyword,

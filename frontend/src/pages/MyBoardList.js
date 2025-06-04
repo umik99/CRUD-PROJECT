@@ -8,6 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'; // 이거 꼭 import 해야 �
 import { FaArrowLeft } from "react-icons/fa";
 import defaultIMG from '../img/default_profile.png';
 import { baseProfileImageUrl } from '../config/APIConfig';
+import { backendURL } from '../config/APIConfig';
 
 
 
@@ -85,7 +86,7 @@ function MyBoardList({user}){
         
     
 
-        axios.get(`/api/mypage/myboards`, 
+        axios.get(`${backendURL}/api/mypage/myboards`, 
             {
                 params: {
                     page:currentPage,

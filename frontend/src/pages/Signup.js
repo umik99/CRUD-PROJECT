@@ -5,6 +5,7 @@ import Base from '../components/layouts/BaseLayout';
 import BaseLayout from '../components/layouts/BaseLayout';
 import '../styles/login.css';
 import {useNavigate} from "react-router-dom";
+import { backendURL } from '../config/APIConfig';
 
 function Signup(){
 
@@ -48,7 +49,7 @@ const handleChange = (e) => {
   }
 
     try{
-        await axios.post("/api/signup", form);
+        await axios.post(`${backendURL}/api/signup`, form);
         alert("회원가입 성공! 로그인하세요.");
         window.location.href = '/login';
 

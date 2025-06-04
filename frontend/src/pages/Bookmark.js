@@ -8,6 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'; // 이거 꼭 import 해야 �
 import { FaArrowLeft } from "react-icons/fa";
 import { baseProfileImageUrl } from '../config/APIConfig';
 import defaultIMG from '../img/default_profile.png';
+import { backendURL } from '../config/APIConfig';
 
 
 
@@ -86,7 +87,7 @@ function Bookmark({user}){
         
     
 
-        axios.get(`/api/bookmark/list`, 
+        axios.get(`${backendURL}/api/bookmark/list`, 
             {
                 params: {
                     page:currentPage,
@@ -139,7 +140,7 @@ function Bookmark({user}){
     };
 
     const handleDelete = () =>{
-        axios.post(`/api/bookmark/delete`, selected, {
+        axios.post(`${backendURL}/api/bookmark/delete`, selected, {
             withCredentials:true,
         })
         .then(() =>{

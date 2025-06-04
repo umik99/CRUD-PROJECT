@@ -7,6 +7,7 @@ import { FaTrashAlt } from 'react-icons/fa'; // 휴지통 아이콘
 import {GoogleMap, Marker, useJsApiLoader, Autocomplete} from "@react-google-maps/api";
 import {APIKEY, LIBRARIES} from "../config/APIConfig";
 import '../styles/read.css';
+import { backendURL } from "../config/APIConfig";
 
 const japanCenter = { lat: 35.6895, lng: 139.6917 }; // 도쿄
 
@@ -114,7 +115,7 @@ function Register({user}) {
       );
       formData.append("boardDTO", jsonBlob);
 
-        const response = await axios.post(`/api/board/register`, formData, {
+        const response = await axios.post(`${backendURL}/api/board/register`, formData, {
        
             withCredentials:true
         });
