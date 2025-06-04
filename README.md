@@ -6,7 +6,8 @@
 
 
 <img width="1702" alt="dns 서버 배포 완료" src="https://github.com/user-attachments/assets/3ea5ee62-f9c9-43c6-a9d0-1df1dfa9830f" />
-![ERD](https://github.com/user-attachments/assets/f6c6cafa-1b25-4dcc-9d7e-1171f12b6bcc)
+<img width="1694" alt="DNS 서버 배포 - 메인페이지" src="https://github.com/user-attachments/assets/9352bce6-327f-4ebe-8ea0-15d2f462c556" />
+
 
 
 ![ERD](https://github.com/user-attachments/assets/89c47696-811d-47b5-9180-8bc59d89a37e)
