@@ -3,6 +3,15 @@
 
 # KULOG - 일본 여행지 맛집 추천, 리뷰 게시판 (CRUD SERVICE) #
 
+
+
+<img width="1702" alt="dns 서버 배포 완료" src="https://github.com/user-attachments/assets/3ea5ee62-f9c9-43c6-a9d0-1df1dfa9830f" />
+![ERD](https://github.com/user-attachments/assets/f6c6cafa-1b25-4dcc-9d7e-1171f12b6bcc)
+
+
+![ERD](https://github.com/user-attachments/assets/89c47696-811d-47b5-9180-8bc59d89a37e)
+
+
 ### 주요기능 ###
 - 지역 카테고리 (훗카이도, 관동, 간사이, 규슈) 별 따로 게시판 기능 구현
 - 사진 슬라이드, 미리보기 
